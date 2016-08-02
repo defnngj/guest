@@ -1,0 +1,312 @@
+
+@charset "utf-8";
+/* CSS Document */
+html{overflow-x:auto; overflow-y:hidden;}
+*{padding: 0px;margin: 0px;}
+@font-face{font-family:'思源黑体 CN';src:url(/image/sign/mx4.ttf); 
+font-style:normal; font-weight:normal;}
+a{text-decoration: none;font-family: "思源黑体 CN";font-weight: lighter;}
+li{list-style: none;}
+img{border: none;}
+button{cursor: pointer;}
+input{cursor: pointer;}
+body{font-family: "思源黑体 CN","Microsoft Yahei","宋体",Tahoma,'Simsun',Arial,Helvetica,sans-serif,"微软雅黑";font-weight: lighter;
+margin:0;height:100%;overflow-y:auto;}
+.clear{clear: both;width: 0px;height: 0px;overflow: hidden;}
+#body_bg{background: url(/image/sign/bg-top-center.png) top center #fff no-repeat ;width: 100%;height: 100%;}
+#bg_left{background: url(/image/sign/bg-left.png) bottom no-repeat;width: 170px;height: 100%;position: absolute;bottom: 0px;}
+#bg_left_center{background: url(/image/sign/bg-left-center.png) left center no-repeat;width: 100px;height: 100px;position: absolute;bottom: 50%;margin-bottom: -50px;left: 0;}
+#bg_left_bottom{background: url(/image/sign/bg-left-bottom.png) 0 0 no-repeat;width: 458px;height: 274px;position: absolute;bottom: 0;left:0;}
+#bg_right_top{background: url(/image/sign/bg-right-top.png) 0 0 no-repeat;width: 332px;height: 305px;position: absolute;right:0;top: 0;}
+#bg_right_bottom{background: url(/image/sign/bg-right-bottom.png) 0 0 no-repeat;width: 387px;height: 274px;position: absolute;right:0;bottom: 0;}
+#bg_buttom{ background:url(/image/sign/bg-bottom.png) bottom no-repeat;
+width: 100%;height: 84px;position: absolute;z-index: 2; }	
+#logo{margin: 45px;background: url(/image/sign/logo.png) no-repeat;width: 172px;
+height: 32px;}
+#logo span{display: inline-block;font-size: 20px;}
+#text{width: 100%;position: absolute;font-size: 60px;color: #333333;text-align: center;}
+#cent_box{width: 486px;margin:0 auto;height:148px;background: url(/image/sign/cent.png) no-repeat;position: absolute;left: 50%;margin-left: -243px; }
+#cent_box .box{width: 446px;
+    height: 108px;
+    left: 20px;
+    position: absolute;
+    top: 20px;
+}
+#cent_box .box input{height: 52px;line-height: 52px;width:444px;background: none;border: none;
+	outline: none;font-size: 36px;color: #333;}
+#cent_boxs .drawing{font-size: 36px;text-align: center;height: 132px;
+line-height: 130px;color: #fff;}
+#cent_boxs{height: 400px;border-radius: 22px;left: 0px;
+margin: 0 auto;top: 0px;z-index: 4;position: absolute;width: 1100px;}
+#texts{padding-top :60px;text-align: center;color: #fff;font-size: 48px;}
+#cent_boxs .num{height: 132px;width: 990px;margin: 0 auto;}
+#cent_boxs .num li{background:url(/image/sign/draw_icon.png) no-repeat -569px -242px;
+width: 70px;height: 132px;margin:0px 10px;float: left;display: inline-block;position: relative;
+overflow: hidden;text-align: center;}
+#cent_boxs .num li img{position: absolute;top: 0px;left: 0px;}
+#cent_boxs .btns{background-color: #f0f9ff;border-radius: 7px;color: #0da8f6;
+width: 155px;height: 50px;font-size: 24px;line-height: 50px;left: 475px;
+position: absolute;top: 320px;text-align: center;cursor: pointer;}
+.sign{position: absolute;top: 476px;left:1050px;} 
+#cent_boxs .text{color: #fff;text-align: center;font-size: 48px;padding: 20px 0px;}
+.btn{ background: #f0f9ff;border-radius: 7px;width: 125px;height: 50px;font-size: 24px;line-height: 50px;
+z-index: 5;text-align: center;color: #0da8f6;cursor: pointer;}
+.btntop{left: 850px;background-color: #f0f9ff;border-radius: 7px;
+width: 125px;height: 50px;font-size: 24px;position: absolute;line-height: 50px;top: 555px;
+z-index: 5;text-align: center;color: #0da8f6;cursor: pointer;}
+#cent_boxs_bg .box_1 {font-size: 24px;color: #fff;margin: 0 auto;
+padding-bottom: 30px;width: 890px;text-align: center;}
+#cent_boxs_bg .box_2 {font-size: 24px;color: #fff;margin: 0 auto;
+padding-bottom: 30px;}
+#cent_boxs_bg .box_2  p{padding-bottom: 10px;text-align: center;}
+#cent_boxs_bg .box_2 li{display: inline-block;float: left;padding-right: 35px;}
+#cent_boxs_bg .box_1  p{padding-bottom: 10px;text-align: center;}
+#cent_boxs_bg .box_1  li{display: inline-block;padding:0px  15px;}
+#cent_boxs_bg .box_1  li.none{padding: 0px;}
+#cent_boxs_bg .box_2  li.none{padding: 0px;}
+#cent_boxs_bg .box_3{width: 920px;height: 340px;margin:0 auto;}
+#show{position: relative;z-index: 6;position: absolute;}
+#show .smile{background:url(/image/sign/draw_icon.png) no-repeat
+-150px -110px;width:150px;height: 80px;display: inline-block;font-size: 30px;
+color: #fff;height: 80px;line-height: 80px;padding-left: 107px;}
+#show .cry{background:url(/image/sign/draw_icon.png) no-repeat
+-150px -230px;width:240px;height: 80px;display: inline-block;font-size: 30px;
+color: #fff;height: 80px;line-height: 80px;padding-left: 107px;}
+#show .sign_hint{background:url(/image/sign/draw_icon.png) no-repeat
+-150px -340px;width:240px;height: 80px;display: inline-block;font-size: 30px;
+color: #fff;height: 80px;line-height: 80px;padding-left: 107px;}
+.affirm{position: absolute;top: 20px;left: 30px;background: #f0f9ff;border-radius: 7px;
+width: 125px;height: 50px;font-size: 24px;line-height: 50px;
+z-index: 7;text-align: center;color: #0da8f6;cursor: pointer;}
+.next{position: absolute;display: none;}
+#cent_boxs_bg {position: absolute;z-index: 99;}
+.event_table td{cursor: pointer;}
+.herl{color: #0000ff;}
+#txt_box{width: 1000px;color:#fff;position: relative;z-index: 10;overflow: hidden;margin: 8% auto;min-height: 500px;}
+#txt_box .issue_name{
+	font-size: 48px;
+	margin-bottom: 40px;
+	margin-top: 5px;
+	background-color: #1fb8ee;
+	height: 94px;
+	width: 808px;
+	border-radius: 5px;
+	line-height: 94px;
+	padding: 30px 96px 26px 96px; 
+	position: relative;
+	overflow: hidden;
+}
+#txt_box .issue_name.signed{
+	background-color: #ff5575;
+}
+#txt_box ul .message{font-size: 30px;margin-bottom: 40px;padding-left: 96px;color: #999999;}
+#txt_box ul  .boder{    border-bottom: 1px solid rgba(31,184,238,0.5);padding-bottom: 40px;}
+#txt_box  span{display:inline-block;width: 400px;vertical-align: top;margin-right: 20px;word-wrap:break-word; overflow:hidden;font-weight: lighter;}
+ .btn_1{background-color: #00b7ee;width: 166px;height: 52px;text-align: center; color: #fff;
+line-height: 52px;vertical-align: middle;font-size: 24px;display: inline-block;margin-left: 166px;border-radius: 4px;}
+.btn_1 em{display: none;}
+#txt_box ul .btn_issue{padding-top: 40px;}
+.disabled{background-color: #ccc;cursor: default; }
+.disabled em, .disabled i{display: inline-block;font-style: normal;}
+
+#txt_box ul  .btn_3{
+	background-color: #0ca8f5;
+	width: 166px;
+	height: 52px;
+	font-size: 24px;  
+	border-radius: 3px;
+	line-height: 52px;
+	vertical-align: middle;
+	text-align: center;}
+#txt_box ul .disabled{background-color: #ccc;cursor: default; }
+.issue{ background:url(/image/sign/draw_icon.png) no-repeat;}
+.win{font-size: 44px;line-height: 80px;vertical-align: middle;color: #30db48;}
+#txt_box ul .win_img{background:url(/image/sign/yes.png) no-repeat 350px 0;vertical-align: middle;
+	height: 74px;
+	display: inline-block;    
+	text-indent: 200px;
+    font-size: 72px;
+    font-weight: 200;
+    margin-top: 213px;
+    line-height: 74px;
+	width: 100%;
+	text-align: center;}
+.wined{
+	background: url(/image/sign/signed.png) no-repeat;
+	position: absolute;
+	width: 158px;
+	height: 159px;
+	top: -76px;
+    left: -58px; }
+#txt_box ul .been_img{background-position:-418px 0px;vertical-align: middle;line-height: 50px;width: 50px;height: 50px;display: inline-block;}
+#cent_box_isn{overflow: hidden;position: absolute;z-index: 7;background:url(/image/sign/bg.png) no-repeat;width: 100%;
+height: 100%;top: 0px;background-size:100% 100%;}
+#text_box_2{
+	/* width: 410px; */
+	text-align: center;
+	margin:16% auto;
+	color: #333333;
+	font-size: 74px;
+	position: relative;
+	z-index: 12;
+	overflow: hidden;
+}
+#text_box_2 .cry{
+	width: 74px;
+	height: 74px;
+	background:url(/image/sign/error.png) no-repeat ;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 20px;
+}
+#text_box_2 .smile{
+	width: 74px;
+	height: 74px;
+	background:url(/image/sign/yes.png) no-repeat ;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 20px;
+}
+#tips{
+	background:url(/image/sign/erro_text.png) no-repeat;
+	vertical-align:middle;
+	height: 74px;
+	}
+#seat{
+	font-size: 48px;
+	color: #fff;
+}
+.text_icon{background: url(/image/sign/icon.png);}
+#station{background-position: 0px 8px;text-indent: 25px;}
+#position{background-position: -500px -206px;text-indent: 35px;}
+#telphone{background-position: 0px 65px;text-indent: 25px;}
+#email{background-position: 0px -318px;text-indent: 35px;}
+#place_status{background-color: #00a7ea; margin-left: 178px;}
+.user_box{float: left;}
+.user_box a{display: inline-block;}
+.typename{display: inline-block;font-size:36px;margin-left: 10px;font-style: normal; }
+#wined{display: none;}
+.type_box{float:right; }
+.valid_box{float:left;}
+.valid_box #valid{line-height: 100px;vertical-align: middle;color: #d85656;font-size:30px;margin-left:20px;}
+.start{
+	background:url(/image/sign/money.png) no-repeat;    
+	width: 40px;
+    height: 40px;
+    display: none;
+    margin-top: 26px;
+    float: right;
+    margin-left: 10px;
+}
+.same_text{width: 100%;font-size: 36px;text-align: center;
+	color: #555;
+	display: none;position: relative;z-index: 100;}
+.same_box{
+	position: absolute;
+	z-index: 99;
+	width: 1000px;
+	left: 50%;
+	margin-left: -500px;
+	min-height: 600px;
+}
+.same_num{
+	line-height: 1;
+	font-size: 24px;
+	color: #666666;
+}
+.same_num span{
+	color: #ff0000;
+}
+.sameul_box{
+	max-height: 450px;
+	overflow: hidden;
+	margin-top: 30px;
+}
+.sameul_box ul{
+	max-height: 450px;
+    overflow-y: scroll;
+    width: 100%;
+    padding-right: 5%;
+}
+.sameul_box li{
+	border: 1px solid #93d6ec;
+	height: 152px;
+	width: 718px;
+	padding: 30px 140px;
+	margin-bottom: 20px;
+	position: relative;
+	overflow: hidden;
+}
+.sameul_box li:last-child{
+	margin-bottom: 0;
+}
+.li-selected{
+	background: url(/image/sign/selected.png) no-repeat ;
+	width: 64px;
+	height: 64px;
+	position: absolute;
+	top: 22px;
+	right: 22px;
+	display: none;
+}
+.active .li-selected{
+	display: block;
+}
+.sameul_box li.active{
+	background-color: #d3f2fb;
+}
+.sameul_box li div{
+	float: left;
+	width: 100%;
+	line-height: 50px;
+}
+.sameul_box li span{
+	float: left;
+	font-size: 30px;
+}
+.c_333{
+	color: #333;
+}
+.c_33c6f1{
+	color: #33c6f1;
+}
+.c_90989a{
+	color: #90989a;
+}
+.position, .phone{
+	width: 295px;
+	text-align: left;
+}
+.guest_type_name{
+	margin: 0 52px;
+}
+.traffic_allowance{
+	background:url(/image/sign/money.png) no-repeat;    
+	width: 40px;
+    height: 40px;
+    margin-top: 5px;
+    margin-left: 20px;
+}
+.same_btn{
+	margin-top: 50px;
+	width: 100%;
+	float: left;
+}
+.sure_btn{
+	display:none;
+	margin-left: 160px;
+}
+.cancle_btn{
+	float:right;
+	margin-right: 160px;
+	background-color:#55d3ff;
+}
+.is-sign{
+	background: url(/image/sign/signed-blue.png) no-repeat;
+	position: absolute;
+	width: 81px;
+	height: 81px;
+	top: 0;
+    left: 0; 
+}
+

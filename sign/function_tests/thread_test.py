@@ -1,0 +1,56 @@
+#coding=utf-8
+import requests
+import threading
+from time import ctime
+
+base_url = "http://127.0.0.1:8000"
+'''
+datas = {"eid":1,"phone":13800113000}
+r = requests.post(base_url+'/user_sign/',data=datas)
+print(r.text)
+'''
+
+#签到线程
+def sign_thread(start_user,end_user):
+    for i in range(start_user,end_user):
+        phone = 13800110000 + i
+        datas = {"eid":1,"phone":phone}
+        r = requests.post(base_url+'/user_sign/',data=datas)
+        print("sign user:" + str(phone))
+        try:
+            assert r.text == "sign success"
+        except AssertionError as e:
+            print("phone:" + str(phone) + ",user sign fail!")
+
+
+#设置用户分组
+lists = {1:1001,1001:2001,2001:3001}
+
+#创建线程数组
+threads = []
+
+#创建线程
+for start_user,end_user in lists.items():
+    t = threading.Thread(target=sign_thread,args=(start_user,end_user))
+    threads.append(t)
+
+
+if __name__ == '__main__':
+    #主线程
+    print('start:%s' %ctime())
+
+    #启动线程
+    for i in range(len(lists)):
+        threads[i].start()
+    for i in range(len(lists)):
+        threads[i].join()
+
+    #主线程
+    print('end:%s' %ctime())
+
+
+
+
+
+
+#

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Guest Manage System</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="//v3.bootcss.com/examples/theme/theme.css" rel="stylesheet">
+
+  </head>
+
+  <body role="document">
+
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/guest_manage/">Guest Manage System</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/event_manage/">发布会</a></li>
+            <li class="active"><a href="#about">嘉宾</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+           <li><a href="#">{{user}}</a></li>
+           <li><a href="/logout/">退出</a></li>
+         </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+
+    <div class="container theme-showcase" role="main">
+
+      <!--发布会表单-->
+      <div class="page-header">
+        <!-- 搜索功能-->
+        <div id="navbar" class="navbar-collapse collapse">
+          <form class="navbar-form" method="get" action="/sreach_phone/">
+            <div class="form-group">
+              <input name="phone" type="text" placeholder="手机号" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">搜索</button>
+          </form>
+        </div><!--/.navbar-collapse -->
+      </div>
+
+      <!--列表显示 -->
+      <div class="row">
+        <div class="col-md-6">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>名称</th>
+                <th>手机</th>
+                <th>Email</th>
+                <th>签到</th>
+                <th>发布会id</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for guest in guests %}
+                <tr>
+                  <td>{{ guest.id }}</td>
+                  <td>{{ guest.realname }}</td>
+                  <td>{{ guest.phone }}</td>
+                  <td>{{ guest.email }}</td>
+                  <td>{{ guest.sign }}</td>
+                  <td>{{ guest.event }}</td>
+                </tr>
+             {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 列表分页器 -->
+    <div class="pagination">
+    <span class="step-links">
+      {% if guests.has_previous %}
+        <a href="?page={{ guests.previous_page_number }}">previous</a>
+      {% endif %}
+        <span class="current">
+          Page {{ guests.number }} of {{ guests.paginator.num_pages }}.
+        </span>
+      {% if guests.has_next %}
+        <a href="?page={{ guests.next_page_number }}">next</a>
+      {% endif %}
+    </span>
+    </div>
+
+
+      <div class="page-header">
+      </div>
+      <footer class="footer">
+        <p>&copy; Company 2016</p>
+      </footer>
+
+
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+  </body>
+</html>
