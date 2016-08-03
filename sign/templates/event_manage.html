@@ -75,7 +75,7 @@
                   <td>{{ event.status }}</td>
                   <td>{{ event.address }}</td>
                   <td>{{ event.start_time }}</td>
-                  <td><a href="/sign_index/{{ event.id }}/">sign</a></td>
+                  <td><a href="/sign_index/{{ event.id }}/"  target="{{ event.id }}_black">sign</a></td>
                 </tr>
              {% endfor %}
             </tbody>

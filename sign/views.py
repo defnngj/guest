@@ -14,7 +14,6 @@ def index(request):
 
 # 登录动作
 def login_action(request):
-    print(request.method)
     if request.method == "POST":
         # 寻找名为 "username"和"password"的POST参数，而且如果参数没有提交，返回一个空的字符串。
         username = request.POST.get("username","")
