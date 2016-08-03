@@ -4,17 +4,16 @@ from django.template.loader import render_to_string
 from django.http import HttpRequest
 from django.test import TestCase
 from django.test import Client
-from datetime import datetime,timezone
+from datetime import datetime
 from unittest import mock
 
 from sign.views import index
 from django.contrib.auth.models import User
-from sign.models import Event
+from sign.models import Event, Guest
 import time
 
 
 # Create your tests here.
-
 class IndexPageTest(TestCase):
     ''' 测试index登录首页'''
 
@@ -38,6 +37,12 @@ class LoginActionTest(TestCase):
     def setUp(self):
         User.objects.create_user('admin', 'admin@mail.com', 'admin123456')
 
+    def test_add_author_email(self):
+        ''' 测试添加用户 '''
+        user = User.objects.get(username="admin")
+        self.assertEqual(user.username, "admin")
+        self.assertEqual(user.email, "admin@mail.com")
+
     def test_login_action_username_password_error(self):
         ''' 用户名密码为空 '''
         c = Client()
@@ -56,48 +61,77 @@ class LoginActionTest(TestCase):
         ''' 登录成功 '''
         c = Client()
         response = c.post('/login_action/', data = {'username':'admin','password':'admin123456'})
-        print(response.status_code)
         self.assertEqual(response.status_code, 302)
 
 
-class  EventMangeTest(TestCase):
+class EventMangeTest(TestCase):
+    ''' 发布会管理 '''
 
     def setUp(self):
-        Event.objects.create(name="xiaomi5",limit=2000,address='beijing',status=1,start_time=timezone.now())
+        Event.objects.create(name="xiaomi5",limit=2000,address='beijing',status=1,start_time=datetime.now())
 
 
     def test_data(self):
-        event = User.objects.get(name="xiaomi5")
+        ''' 测试添加发布会 '''
+        event = Event.objects.get(name="xiaomi5")
         self.assertEqual(event.address, "beijing")
 
-    def test_event_mange_aaa(self):
-        ''' 测试发布会管理 '''
+    def test_event_mange_success(self):
+        ''' 测试发布会:xiaomi5 '''
         c = Client()
         response = c.post('/event_manage/')
-        print(response.status_code)
-        print(response.content)
-        #self.assertEqual(response.status_code, 200)
-        #self.assertIn(b"username or password null!", response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"xiaomi5", response.content)
+        self.assertIn(b"beijing", response.content)
 
+    def test_event_mange_sreach_success(self):
+        ''' 测试发布会搜索 '''
+        c = Client()
+        response = c.post('/sreach_name/',{"name":"xiaomi5"})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"xiaomi5", response.content)
+        self.assertIn(b"beijing", response.content)
+
+
+class GuestManageTest(TestCase):
+    ''' 嘉宾管理 '''
+
+    def setUp(self):
+        Event.objects.create(id=1,name="xiaomi5",limit=2000,address='beijing',status=1,start_time=datetime.now())
+        Guest.objects.create(realname="alen",phone=18611001100,email='alen@mail.com',sign=0,event_id=1)
+
+
+    def test_data(self):
+        ''' 测试添加嘉宾 '''
+        guest = Guest.objects.get(realname="alen")
+        self.assertEqual(guest.phone, "18611001100")
+        self.assertEqual(guest.email, "alen@mail.com")
+        self.assertFalse(guest.sign)
+
+
+    def test_event_mange_success(self):
+        ''' 测试嘉宾信息: alen '''
+        c = Client()
+        response = c.post('/guest_manage/')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"alen", response.content)
+        self.assertIn(b"18611001100", response.content)
 
 
 '''
-class MyTest2(TestCase):
+运行所有用例：
+python3 manage.py test
 
-    def setUp(self):
-        User.objects.create_user('admin', 'admin@mail.com', 'admin123456')
+运行sign应用下的所有用例：
+python3 manage.py test sign
 
-    def atest_add_author_email(self):
-        """test add auhor useranme and  password"""
-        user = User.objects.get(username="admin")
-        self.assertEqual(user.username, "admin")
-        #self.assertEqual(user.password, "admin123456")
+运行sign应用下的tests.py文件用例：
+python3 manage.py test sign.tests
 
-    def setUp(self):
-        number = input("Enter a number:")
-        self.number = int(number)
+运行sign应用下的tests.py文件中的 GuestManageTest 测试类：
+python3 manage.py test sign.tests.GuestManageTest
 
-    def aatest_case(self):
-        self.assertEqual(self.number, 10, msg="Your input is not 10!")
+......
+
 
 '''

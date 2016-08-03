@@ -105,8 +105,8 @@ def sreach_phone(request):
 # 签到页面
 def sign_index(request, event_id):
     event = get_object_or_404(Event, id=event_id)
-    guest_list = Guest.objects.filter(event_id=event_id)
-    sign_list = Guest.objects.filter(sign="1")
+    guest_list = Guest.objects.filter(event_id=event_id)  # 签到人数
+    sign_list = Guest.objects.filter(sign="1")            # 已签到数
     guest_data = str(len(guest_list))
     sign_data = str(len(sign_list))
     return render(request, 'sign_index.html', {'event': event,
@@ -114,14 +114,14 @@ def sign_index(request, event_id):
                                                'sign':sign_data})
 
 
-# 签到页签到功能
+# 签到动作
 def sign_index_action(request,event_id):
-    eventid = event_id
+
     event = get_object_or_404(Event, id=event_id)
     guest_list = Guest.objects.filter(event_id=event_id)
     sign_list = Guest.objects.filter(sign="1")
     guest_data = str(len(guest_list))
-    sign_data = str(len(sign_list))
+    sign_data = str(len(sign_list)+1)
 
     phone =  request.POST.get('phone','')
 
@@ -129,7 +129,7 @@ def sign_index_action(request,event_id):
     if not result:
         return render(request, 'sign_index.html', {'event': event,'hint': '手机号为空或不存在','guest':guest_data,'sign':sign_data})
 
-    result = Guest.objects.filter(phone = phone,event_id = eventid)
+    result = Guest.objects.filter(phone = phone,event_id = event_id)
     if not result:
         return render(request, 'sign_index.html', {'event': event,'hint': '该用户未参加此次发布会','guest':guest_data,'sign':sign_data})
 
