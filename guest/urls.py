@@ -17,7 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from sign.views import sign_index, sign_index_action, sign_aciton
 from sign import views
-
+from sign import views_if
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -30,7 +30,7 @@ urlpatterns = [
     url(r'^accounts/login/$', views.index),
     url(r'^sreach_name/$', views.sreach_name),
     url(r'^sreach_phone/$', views.sreach_phone),
-    url(r'^user_sign/', sign_aciton),
     url(r'^sign_index/(?P<event_id>[0-9]+)/$', sign_index),
     url(r'^sign_index_action/(?P<event_id>[0-9]+)/$', sign_index_action),
+    url(r'^user_sign/', views_if.user_sign),
 ]

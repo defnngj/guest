@@ -1,25 +1,5 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
-
-    <title>Guest Sign Page</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="//v3.bootcss.com/examples/theme/theme.css" rel="stylesheet">
-
-  </head>
-
-  <body role="document">
+{% extends "base.html" %}
+{% block content %}
 
     <!-- 导航栏 -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -42,34 +22,22 @@
     <div class="container theme-showcase" role="main">
 
       <!--签到表单-->
-        <!--<h1>{{ event.name }}</h1>-->
-    <br><br><br><br><br>
-    <div class="row">
-      <div class="col-lg-6">
-        <form class="bs-example bs-example-form" role="form" action="/sign_index_action/{{ event.id }}/" method="post">
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="输入手机号" name="phone">
-          <button type="submit" class="btn btn-success">签到</button><br>
-          <font color="red">
-            <br>{{hint}}
-            <br>{{user.realname}}&nbsp&nbsp{{user.phone}}
-          </font>
-        </div><!-- /input-group -->
-        </form>
-      </div><!-- /.col-lg-6 -->
-    </div><!-- /.row -->
-
+      <br><br><br><br><br>
+      <div class="row">
+        <div class="col-lg-6">
+          <form class="bs-example bs-example-form" role="form" action="/sign_index_action/{{ event.id }}/" method="post">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="输入手机号" name="phone">
+            <button type="submit" class="btn btn-success">签到</button><br>
+            <font color="red">
+              <br>{{hint}}
+              <br>{{user.realname}}&nbsp&nbsp{{user.phone}}
+            </font>
+          </div><!-- /input-group -->
+          </form>
+        </div><!-- /.col-lg-6 -->
+      </div><!-- /.row -->
 
     </div> <!-- /container   glyphicon glyphicon-phone border-style:none; -->
 
-
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
-    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-  </body>
-</html>
+{% endblock %}

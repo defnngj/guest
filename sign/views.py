@@ -9,7 +9,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 # 首页(登录)
 def index(request):
-    return render(request,"index2.html")
+    return render(request,"index.html")
 
 
 # 登录动作
@@ -28,7 +28,7 @@ def login_action(request):
             request.session['username'] = username    # 将 session 信息写到服务器
             return response
         else:
-            return render(request,"index2.html",{"error":"username or password error!"})
+            return render(request,"index.html",{"error":"username or password error!"})
 
 
 # 退出登录
@@ -105,8 +105,8 @@ def sreach_phone(request):
 # 签到页面
 def sign_index(request, event_id):
     event = get_object_or_404(Event, id=event_id)
-    guest_list = Guest.objects.filter(event_id=event_id)  # 签到人数
-    sign_list = Guest.objects.filter(sign="1")            # 已签到数
+    guest_list = Guest.objects.filter(event_id=event_id)           # 签到人数
+    sign_list = Guest.objects.filter(sign="1", event_id=event_id)   # 已签到数
     guest_data = str(len(guest_list))
     sign_data = str(len(sign_list))
     return render(request, 'sign_index.html', {'event': event,
@@ -119,7 +119,7 @@ def sign_index_action(request,event_id):
 
     event = get_object_or_404(Event, id=event_id)
     guest_list = Guest.objects.filter(event_id=event_id)
-    sign_list = Guest.objects.filter(sign="1")
+    sign_list = Guest.objects.filter(sign="1", event_id=event_id)
     guest_data = str(len(guest_list))
     sign_data = str(len(sign_list)+1)
 
