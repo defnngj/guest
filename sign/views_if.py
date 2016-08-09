@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from sign.models import Event,Guest
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
+import time
 
 
 #添加发布会接口
@@ -59,6 +60,10 @@ def get_event_list(request):
         else:
             return JsonResponse({'ststus':10022, 'message':'query result is empty'})
 
+    if name != '':
+        datas = {}
+        result = Event.objects.filter(name = name)
+
 
 
 # 添加嘉宾接口
@@ -81,15 +86,27 @@ def add_guest(request):
 
     event_limit = Event.objects.get(id = eid).limit     #发布会限制人数
     guest_limit = Guest.objects.filter(event_id = eid)  #发布会已添加的嘉宾数
-    print(event_limit)
-    print(len(guest_limit))
+
     if len(guest_limit) >= event_limit:
         return JsonResponse({'ststus':10024,'message':'event number is full'})
+
+    event_time = Event.objects.get(id = eid).start_time     #发布会时间
+    print(event_time)
+    etime = str(event_time).split(".")[0]
+    timeArray = time.strptime(etime, "%Y-%m-%d %H:%M:%S")
+    e_time = int(time.mktime(timeArray))
+
+    now_time = str(time.time())        #当前时间
+    ntime = now_time.split(".")[0]
+    n_time = int(ntime)
+
+    if n_time >= e_time:
+        return JsonResponse({'ststus':10025,'message':'event has started'})
 
     try:
         Guest.objects.create(realname=realname,phone=int(phone),email=email,sign=0,event_id=int(eid))
     except IntegrityError as e:
-        return JsonResponse({'ststus':10025,'message':'the event guest phone number repeat'})
+        return JsonResponse({'ststus':10026,'message':'the event guest phone number repeat'})
 
     return JsonResponse({'ststus':200,'message':'add guest success'})
 
