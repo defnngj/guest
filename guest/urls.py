@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'^sign_index_action/(?P<event_id>[0-9]+)/$', sign_index_action),
     url(r'^add_event/', views_if.add_event),
     url(r'^get_event_list/', views_if.get_event_list),
+    url(r'^get_guest_list/', views_if.get_guest_list),
     url(r'^add_guest/', views_if.add_guest),
     url(r'^user_sign/', views_if.user_sign),
 ]

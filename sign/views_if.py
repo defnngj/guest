@@ -61,9 +61,58 @@ def get_event_list(request):
             return JsonResponse({'ststus':10022, 'message':'query result is empty'})
 
     if name != '':
-        datas = {}
-        result = Event.objects.filter(name = name)
+        datas = []
+        results = Event.objects.filter(name__contains = name)
+        if results:
+            event = {}
+            for r in results:
+                print(r.name)
+                event['name'] = r.name
+                event['limit'] = r.limit
+                event['status'] = r.status
+                event['address'] = r.address
+                event['start_time'] = r.start_time
+                datas.append(event)
+            return JsonResponse({'ststus':200, 'message':'success', 'data':datas})
+        else:
+            return JsonResponse({'ststus':10022, 'message':'query result is empty'})
 
+
+#嘉宾查询接口
+def get_guest_list(request):
+    eid = request.GET.get("eid", "")
+    phone = request.GET.get("phone", "")
+
+    if eid == '':
+        return JsonResponse({'ststus':10021,'message':'eid cannot be empty'})
+
+    if eid != '' and phone == '':
+        datas = []
+        results = Guest.objects.filter(event_id = eid)
+        if results:
+            guest = {}
+            for r in results:
+                guest['realname'] = r.realname
+                guest['phone'] = r.phone
+                guest['email'] = r.email
+                guest['sign'] = r.sign
+                datas.append(guest)
+            return JsonResponse({'ststus':200, 'message':'success', 'data':datas})
+        else:
+            return JsonResponse({'ststus':10022, 'message':'query result is empty'})
+
+    if eid != '' and phone != '':
+        datas = {}
+        results = Guest.objects.filter(phone = phone,event_id = eid)
+        if results:
+            for r in results:
+                datas['realname'] = r.realname
+                datas['phone'] = r.phone
+                datas['email'] = r.email
+                datas['sign'] = r.sign
+            return JsonResponse({'ststus':200, 'message':'success', 'data':datas})
+        else:
+            return JsonResponse({'ststus':10022, 'message':'query result is empty'})
 
 
 # 添加嘉宾接口
