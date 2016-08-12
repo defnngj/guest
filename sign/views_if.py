@@ -37,84 +37,6 @@ def add_event(request):
     return JsonResponse({'ststus':200,'message':'add event success'})
 
 
-# 发布会查询
-def get_event_list(request):
-
-    eid = request.GET.get("eid", "")
-    name = request.GET.get("name", "")
-
-    if eid == '' and name == '':
-        return JsonResponse({'ststus':10021,'message':'parameter error'})
-
-    if eid != '':
-        datas = {}
-        result = Event.objects.filter(id = eid)
-        if result:
-            for r in result:
-                datas['name'] = r.name
-                datas['limit'] = r.limit
-                datas['status'] = r.status
-                datas['address'] = r.address
-                datas['start_time'] = r.start_time
-            return JsonResponse({'ststus':200, 'message':'success', 'data':datas})
-        else:
-            return JsonResponse({'ststus':10022, 'message':'query result is empty'})
-
-    if name != '':
-        datas = []
-        results = Event.objects.filter(name__contains = name)
-        if results:
-            event = {}
-            for r in results:
-                print(r.name)
-                event['name'] = r.name
-                event['limit'] = r.limit
-                event['status'] = r.status
-                event['address'] = r.address
-                event['start_time'] = r.start_time
-                datas.append(event)
-            return JsonResponse({'ststus':200, 'message':'success', 'data':datas})
-        else:
-            return JsonResponse({'ststus':10022, 'message':'query result is empty'})
-
-
-#嘉宾查询接口
-def get_guest_list(request):
-    eid = request.GET.get("eid", "")
-    phone = request.GET.get("phone", "")
-
-    if eid == '':
-        return JsonResponse({'ststus':10021,'message':'eid cannot be empty'})
-
-    if eid != '' and phone == '':
-        datas = []
-        results = Guest.objects.filter(event_id = eid)
-        if results:
-            guest = {}
-            for r in results:
-                guest['realname'] = r.realname
-                guest['phone'] = r.phone
-                guest['email'] = r.email
-                guest['sign'] = r.sign
-                datas.append(guest)
-            return JsonResponse({'ststus':200, 'message':'success', 'data':datas})
-        else:
-            return JsonResponse({'ststus':10022, 'message':'query result is empty'})
-
-    if eid != '' and phone != '':
-        datas = {}
-        results = Guest.objects.filter(phone = phone,event_id = eid)
-        if results:
-            for r in results:
-                datas['realname'] = r.realname
-                datas['phone'] = r.phone
-                datas['email'] = r.email
-                datas['sign'] = r.sign
-            return JsonResponse({'ststus':200, 'message':'success', 'data':datas})
-        else:
-            return JsonResponse({'ststus':10022, 'message':'query result is empty'})
-
-
 # 添加嘉宾接口
 def add_guest(request):
     eid =  request.POST.get('eid','')                # 关联发布会id
@@ -160,10 +82,88 @@ def add_guest(request):
     return JsonResponse({'ststus':200,'message':'add guest success'})
 
 
+# 发布会查询
+def get_event_list(request):
+
+    eid = request.GET.get("eid", "")      #发布会id
+    name = request.GET.get("name", "")    #发布会名称
+
+    if eid == '' and name == '':
+        return JsonResponse({'ststus':10021,'message':'parameter error'})
+
+    if eid != '':
+        datas = {}
+        result = Event.objects.filter(id = eid)
+        if result:
+            for r in result:
+                datas['name'] = r.name
+                datas['limit'] = r.limit
+                datas['status'] = r.status
+                datas['address'] = r.address
+                datas['start_time'] = r.start_time
+            return JsonResponse({'ststus':200, 'message':'success', 'data':datas})
+        else:
+            return JsonResponse({'ststus':10022, 'message':'query result is empty'})
+
+    if name != '':
+        datas = []
+        results = Event.objects.filter(name__contains = name)
+        if results:
+            event = {}
+            for r in results:
+                print(r.name)
+                event['name'] = r.name
+                event['limit'] = r.limit
+                event['status'] = r.status
+                event['address'] = r.address
+                event['start_time'] = r.start_time
+                datas.append(event)
+            return JsonResponse({'ststus':200, 'message':'success', 'data':datas})
+        else:
+            return JsonResponse({'ststus':10022, 'message':'query result is empty'})
+
+
+#嘉宾查询接口
+def get_guest_list(request):
+    eid = request.GET.get("eid", "")       # 关联发布会id
+    phone = request.GET.get("phone", "")   # 嘉宾手机号
+
+    if eid == '':
+        return JsonResponse({'ststus':10021,'message':'eid cannot be empty'})
+
+    if eid != '' and phone == '':
+        datas = []
+        results = Guest.objects.filter(event_id = eid)
+        if results:
+            guest = {}
+            for r in results:
+                guest['realname'] = r.realname
+                guest['phone'] = r.phone
+                guest['email'] = r.email
+                guest['sign'] = r.sign
+                datas.append(guest)
+            return JsonResponse({'ststus':200, 'message':'success', 'data':datas})
+        else:
+            return JsonResponse({'ststus':10022, 'message':'query result is empty'})
+
+    if eid != '' and phone != '':
+        datas = {}
+        results = Guest.objects.filter(phone = phone,event_id = eid)
+        if results:
+            for r in results:
+                datas['realname'] = r.realname
+                datas['phone'] = r.phone
+                datas['email'] = r.email
+                datas['sign'] = r.sign
+            return JsonResponse({'ststus':200, 'message':'success', 'data':datas})
+        else:
+            return JsonResponse({'ststus':10022, 'message':'query result is empty'})
+
+
 # 用户签到接口
 def user_sign(request):
-    eid =  request.POST.get('eid','')
-    phone =  request.POST.get('phone','')
+    eid =  request.POST.get('eid','')       # 发布会id
+    phone =  request.POST.get('phone','')   # 嘉宾手机号
 
     if eid =='' or phone == '':
         return JsonResponse({'ststus':10021,'message':'parameter error'})

@@ -13,11 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
 from sign.views import sign_index, sign_index_action, sign_aciton
 from sign import views
-from sign import views_if
+
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -32,9 +33,6 @@ urlpatterns = [
     url(r'^sreach_phone/$', views.sreach_phone),
     url(r'^sign_index/(?P<event_id>[0-9]+)/$', sign_index),
     url(r'^sign_index_action/(?P<event_id>[0-9]+)/$', sign_index_action),
-    url(r'^add_event/', views_if.add_event),
-    url(r'^get_event_list/', views_if.get_event_list),
-    url(r'^get_guest_list/', views_if.get_guest_list),
-    url(r'^add_guest/', views_if.add_guest),
-    url(r'^user_sign/', views_if.user_sign),
+    url(r'^sign/', include('sign.urls', namespace="sign")),
+
 ]
