@@ -30,7 +30,6 @@ class IndexPageTest(TestCase):
         self.assertEqual(response.content.decode(), expected_html)
 
 
-
 class LoginActionTest(TestCase):
     ''' 测试登录动作'''
 
@@ -43,7 +42,7 @@ class LoginActionTest(TestCase):
         self.assertEqual(user.username, "admin")
         self.assertEqual(user.email, "admin@mail.com")
 
-    def test_login_action_username_password_error(self):
+    def test_login_action_username_password_null(self):
         ''' 用户名密码为空 '''
         c = Client()
         response = c.post('/login_action/', {'username':'','password':''})
@@ -69,7 +68,6 @@ class EventMangeTest(TestCase):
 
     def setUp(self):
         Event.objects.create(name="xiaomi5",limit=2000,address='beijing',status=1,start_time=datetime.now())
-
 
     def test_data(self):
         ''' 测试添加发布会 '''
@@ -100,14 +98,12 @@ class GuestManageTest(TestCase):
         Event.objects.create(id=1,name="xiaomi5",limit=2000,address='beijing',status=1,start_time=datetime.now())
         Guest.objects.create(realname="alen",phone=18611001100,email='alen@mail.com',sign=0,event_id=1)
 
-
     def test_data(self):
         ''' 测试添加嘉宾 '''
         guest = Guest.objects.get(realname="alen")
         self.assertEqual(guest.phone, "18611001100")
         self.assertEqual(guest.email, "alen@mail.com")
         self.assertFalse(guest.sign)
-
 
     def test_event_mange_success(self):
         ''' 测试嘉宾信息: alen '''
@@ -117,6 +113,13 @@ class GuestManageTest(TestCase):
         self.assertIn(b"alen", response.content)
         self.assertIn(b"18611001100", response.content)
 
+    def test_guest_mange_sreach_success(self):
+        ''' 测试嘉宾搜索 '''
+        c = Client()
+        response = c.post('/sreach_phone/',{"phone":"18611001100"})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"alen", response.content)
+        self.assertIn(b"18611001100", response.content)
 
 '''
 运行所有用例：
