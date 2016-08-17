@@ -34,11 +34,9 @@ def login_action(request):
 # 退出登录
 @login_required
 def logout(request):
-    #del request.session['username']
     auth.logout(request) #退出登录
     response = HttpResponseRedirect('/index/')
     return response
-
 
 
 # 发布会管理（登录之后默认页面）
@@ -101,8 +99,8 @@ def sreach_phone(request):
     return render(request, "guest_manage.html", {"user": username, "guests": contacts})
 
 
-
 # 签到页面
+@login_required
 def sign_index(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     guest_list = Guest.objects.filter(event_id=event_id)           # 签到人数
@@ -115,6 +113,7 @@ def sign_index(request, event_id):
 
 
 # 签到动作
+@login_required
 def sign_index_action(request,event_id):
 
     event = get_object_or_404(Event, id=event_id)
@@ -127,19 +126,19 @@ def sign_index_action(request,event_id):
 
     result = Guest.objects.filter(phone = phone)
     if not result:
-        return render(request, 'sign_index.html', {'event': event,'hint': '手机号为空或不存在','guest':guest_data,'sign':sign_data})
+        return render(request, 'sign_index.html', {'event': event,'hint': 'phone error.','guest':guest_data,'sign':sign_data})
 
     result = Guest.objects.filter(phone = phone,event_id = event_id)
     if not result:
-        return render(request, 'sign_index.html', {'event': event,'hint': '该用户未参加此次发布会','guest':guest_data,'sign':sign_data})
+        return render(request, 'sign_index.html', {'event': event,'hint': 'event id or phone error.','guest':guest_data,'sign':sign_data})
 
     result = Guest.objects.get(phone = phone)
 
     if result.sign:
-        return render(request, 'sign_index.html', {'event': event,'hint': "已签到",'guest':guest_data,'sign':sign_data})
+        return render(request, 'sign_index.html', {'event': event,'hint': "user has sign in.",'guest':guest_data,'sign':sign_data})
     else:
         Guest.objects.filter(phone = phone).update(sign = '1')
-        return render(request, 'sign_index.html', {'event': event,'hint':'签到成功!','user': result,'guest':guest_data,'sign':sign_data})
+        return render(request, 'sign_index.html', {'event': event,'hint':'sign in success!','user': result,'guest':guest_data,'sign':sign_data})
 
 
 

@@ -26,7 +26,7 @@ class IndexPageTest(TestCase):
         ''' 测试调用index函数返回的页与模板加载的index2.html是否相等 '''
         request = HttpRequest()
         response = index(request)
-        expected_html = render_to_string('index2.html')
+        expected_html = render_to_string('index.html')
         self.assertEqual(response.content.decode(), expected_html)
 
 
@@ -67,9 +67,9 @@ class EventMangeTest(TestCase):
     ''' 发布会管理 '''
 
     def setUp(self):
-        Event.objects.create(name="xiaomi5",limit=2000,address='beijing',status=1,start_time=datetime.now())
+        Event.objects.create(name="xiaomi5",limit=2000,address='beijing',status=1,start_time='2017-8-10 12:30:00')
 
-    def test_data(self):
+    def test_add_event_data(self):
         ''' 测试添加发布会 '''
         event = Event.objects.get(name="xiaomi5")
         self.assertEqual(event.address, "beijing")
@@ -95,10 +95,10 @@ class GuestManageTest(TestCase):
     ''' 嘉宾管理 '''
 
     def setUp(self):
-        Event.objects.create(id=1,name="xiaomi5",limit=2000,address='beijing',status=1,start_time=datetime.now())
+        Event.objects.create(id=1,name="xiaomi5",limit=2000,address='beijing',status=1,start_time='2017-8-10 12:30:00')
         Guest.objects.create(realname="alen",phone=18611001100,email='alen@mail.com',sign=0,event_id=1)
 
-    def test_data(self):
+    def test_add_guest_data(self):
         ''' 测试添加嘉宾 '''
         guest = Guest.objects.get(realname="alen")
         self.assertEqual(guest.phone, "18611001100")
@@ -120,6 +120,45 @@ class GuestManageTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"alen", response.content)
         self.assertIn(b"18611001100", response.content)
+
+
+class SignIndexActionTest(TestCase):
+    ''' 发布会签到 '''
+
+    def setUp(self):
+        Event.objects.create(id=1,name="xiaomi5",limit=2000,address='beijing',status=1,start_time='2017-8-10 12:30:00')
+        Event.objects.create(id=2,name="oneplus4",limit=2000,address='shenzhen',status=1,start_time='2017-6-10 12:30:00')
+        Guest.objects.create(realname="alen",phone=18611001100,email='alen@mail.com',sign=0,event_id=1)
+        Guest.objects.create(realname="una",phone=18611001101,email='una@mail.com',sign=1,event_id=2)
+
+    def test_sign_index_action_phone_null(self):
+        ''' 手机号为空 '''
+        c = Client()
+        response = c.post('/sign_index_action/1/',{"phone":""})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"phone error.", response.content)
+
+    def test_sign_index_action_phone_or_event_id_error(self):
+        ''' 手机号或发布会id错误 '''
+        c = Client()
+        response = c.post('/sign_index_action/2/',{"phone":"18611001100"})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"event id or phone error.", response.content)
+
+    def test_sign_index_action_user_sign_has(self):
+        ''' 用户已签到 '''
+        c = Client()
+        response = c.post('/sign_index_action/2/',{"phone":"18611001101"})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"user has sign in.", response.content)
+
+    def test_sign_index_action_sign_success(self):
+        ''' 签到成功 '''
+        c = Client()
+        response = c.post('/sign_index_action/1/',{"phone":"18611001100"})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"sign in success!", response.content)
+
 
 '''
 运行所有用例：
