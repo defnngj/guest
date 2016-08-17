@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from sign.views import sign_index, sign_index_action, sign_aciton
 from sign import views
 
 
@@ -31,8 +30,8 @@ urlpatterns = [
     url(r'^accounts/login/$', views.index),
     url(r'^sreach_name/$', views.sreach_name),
     url(r'^sreach_phone/$', views.sreach_phone),
-    url(r'^sign_index/(?P<event_id>[0-9]+)/$', sign_index),
-    url(r'^sign_index_action/(?P<event_id>[0-9]+)/$', sign_index_action),
+    url(r'^sign_index/(?P<event_id>[0-9]+)/$', views.sign_index),
+    url(r'^sign_index_action/(?P<event_id>[0-9]+)/$', views.sign_index_action),
     url(r'^sign/', include('sign.urls', namespace="sign")),
 
 ]

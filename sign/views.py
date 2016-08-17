@@ -142,39 +142,6 @@ def sign_index_action(request,event_id):
         return render(request, 'sign_index.html', {'event': event,'hint':'签到成功!','user': result,'guest':guest_data,'sign':sign_data})
 
 
-#签到接口
-def sign_aciton(request):
-    eventid =  request.POST.get('eid','')
-    phone =  request.POST.get('phone','')
-
-    if eventid =='' or phone == '':
-        return HttpResponse('parameter error')
-
-    result = Event.objects.filter(id = eventid)
-    if not result:
-        return HttpResponse('eventid null')
-
-    result = Event.objects.get(id = eventid).status
-    if not result:
-        return HttpResponse('event status is not available')
-
-    result = Guest.objects.filter(phone = phone)
-    if not result:
-        return HttpResponse('user phone null')
-
-    result = Guest.objects.filter(phone = phone,event_id = eventid)
-    if not result:
-        return HttpResponse('user did not participate in the conference')
-
-    result = Guest.objects.get(phone = phone).sign
-    if result:
-        return HttpResponse("user has sign in")
-    else:
-        Guest.objects.filter(phone = phone).update(sign = '1')
-        return HttpResponse("sign success")
-
-
-
 
 '''
 get方法是从数据库的取得一个匹配的结果，返回一个对象，如果记录不存在的话，它会报错。
