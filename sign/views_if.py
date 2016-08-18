@@ -30,7 +30,7 @@ def add_event(request):
 
     try:
         Event.objects.create(id=eid,name=name,limit=limit,address=address,status=int(status),start_time=start_time)
-    except ValidationError as e:
+    except ValidationError:
         error = 'start_time format error. It must be in YYYY-MM-DD HH:MM:SS format.'
         return JsonResponse({'ststus':10024,'message':error})
 
@@ -62,7 +62,6 @@ def add_guest(request):
         return JsonResponse({'ststus':10024,'message':'event number is full'})
 
     event_time = Event.objects.get(id = eid).start_time     #发布会时间
-    print(event_time)
     etime = str(event_time).split(".")[0]
     timeArray = time.strptime(etime, "%Y-%m-%d %H:%M:%S")
     e_time = int(time.mktime(timeArray))
@@ -76,7 +75,7 @@ def add_guest(request):
 
     try:
         Guest.objects.create(realname=realname,phone=int(phone),email=email,sign=0,event_id=int(eid))
-    except IntegrityError as e:
+    except IntegrityError:
         return JsonResponse({'ststus':10026,'message':'the event guest phone number repeat'})
 
     return JsonResponse({'ststus':200,'message':'add guest success'})
@@ -179,7 +178,6 @@ def user_sign(request):
         return JsonResponse({'ststus':10023,'message':'event status is not available'})
 
     event_time = Event.objects.get(id = eid).start_time     #发布会时间
-    print(event_time)
     etime = str(event_time).split(".")[0]
     timeArray = time.strptime(etime, "%Y-%m-%d %H:%M:%S")
     e_time = int(time.mktime(timeArray))
