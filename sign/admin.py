@@ -10,10 +10,10 @@ class EventAdmin(admin.ModelAdmin):
 
 
 class GuestAdmin(admin.ModelAdmin):
-    list_display = ['realname', 'phone','email','sign','create_time']
+    list_display = ['realname', 'phone','email','sign','create_time','event_id']
     list_display_links = ('realname', 'phone') # 显示链接
-    search_fields = ['realname','phone']     # 搜索功能
-    list_filter = ['sign']                   # 过滤器
+    search_fields = ['realname','phone']       # 搜索功能
+    list_filter = ['event_id']                 # 过滤器
 
 
 admin.site.register(Event, EventAdmin)

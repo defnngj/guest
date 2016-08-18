@@ -98,6 +98,7 @@ def get_event_list(request):
         except ObjectDoesNotExist:
             return JsonResponse({'ststus':10022, 'message':'query result is empty'})
         else:
+            event['eid'] = result.id
             event['name'] = result.name
             event['limit'] = result.limit
             event['status'] = result.status
@@ -112,6 +113,7 @@ def get_event_list(request):
         if results:
             for r in results:
                 event = {}
+                event['eid'] = r.id
                 event['name'] = r.name
                 event['limit'] = r.limit
                 event['status'] = r.status
