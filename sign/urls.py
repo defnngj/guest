@@ -16,4 +16,5 @@ urlpatterns = [
     # security interface:
     # ex : /sign/sec_get_event_list/
     url(r'^sec_get_event_list/', views_if_security.get_event_list, name='get_event_list'),
+    url(r'^sec_add_event/', views_if_security.add_event, name='add_event'),
 ]
