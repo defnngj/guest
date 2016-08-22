@@ -1,4 +1,8 @@
-f = open("gursts.txt",'w')
+#coding=utf-8
+'''
+创建嘉宾表（sign_guest）测试数据。
+'''
+f = open("guests.txt",'w')
 
 for i in range(1, 3001):
     id = str(i)
