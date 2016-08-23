@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from sign.models import Event, Guest
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.contrib import auth as django_auth
 import base64, time
 import hashlib
@@ -29,7 +29,7 @@ def user_auth(request):
 # 发布会查询接口---增加用户认证
 def get_event_list(request):
     auth_result = user_auth(request)
-    if auth_result == "null" or auth_result == "fail":
+    if auth_result == "null":
         return JsonResponse({'status':10011,'message':'user auth null'})
 
     if auth_result == "fail":
@@ -79,8 +79,6 @@ def user_sign(request):
 
     client_time = request.POST.get('time', '')
     client_sign = request.POST.get('sign', '')
-    print(client_time)
-    print(client_sign)
     if client_time == '' or client_sign == '':
         return "sign null"
 
@@ -107,7 +105,6 @@ def user_sign(request):
 # 添加发布会接口---增加签名+时间戳
 def add_event(request):
     sign_result = user_sign(request)
-    print(sign_result)
     if sign_result == "sign null":
         return JsonResponse({'status':10011,'message':'user sign null'})
     elif sign_result == "timeout":

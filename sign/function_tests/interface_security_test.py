@@ -4,13 +4,27 @@ import requests
 from time import time
 import hashlib
 
-"""
+
 class GetEventListTest(unittest.TestCase):
     ''' 查询发布会信息（带用户认证）'''
 
     def setUp(self):
         self.base_url = "http://127.0.0.1:8000/sign/sec_get_event_list/"
         self.auth_user = ('admin', 'admin123456')
+
+    def test_get_event_list_auth_null(self):
+        ''' auth为空 '''
+        r = requests.get(self.base_url, params={'eid':''})
+        result = r.json()
+        self.assertEqual(result['status'], 10011)
+        self.assertEqual(result['message'], 'user auth null')
+
+    def test_get_event_list_auth_error(self):
+        ''' auth错误 '''
+        r = requests.get(self.base_url, auth=('abc','123'), params={'eid':''})
+        result = r.json()
+        self.assertEqual(result['status'], 10012)
+        self.assertEqual(result['message'], 'user auth fail')
 
     def test_get_event_list_eid_null(self):
         ''' eid 参数为空 '''
@@ -50,8 +64,8 @@ class GetEventListTest(unittest.TestCase):
         self.assertEqual(result['message'], 'success')
         self.assertEqual(result['data'][0]['name'],u'mx6发布会')
         self.assertEqual(result['data'][0]['address'],u'北京国家会议中心')
-"""
 
+"""
 class AddEventTest(unittest.TestCase):
 
     def setUp(self):
@@ -98,13 +112,12 @@ class AddEventTest(unittest.TestCase):
         payload = {'eid':1,'name':'一加4发布会','limit':2000,'address':"深圳宝体",'start_time':'2017','time':self.client_time,'sign':self.sign_md5}
         r = requests.post(self.base_url, data=payload)
         result = r.json()
-        print(result)
         self.assertEqual(result['status'], 10022)
         self.assertEqual(result['message'], 'event id already exists')
 
     def test_add_event_name_exist(self):
         ''' 名称已经存在 '''
-        payload = {'eid':1,'name':'一加3手机发布会','limit':2000,'address':"深圳宝体",'start_time':'2017','time':self.client_time,'sign':self.sign_md5}
+        payload = {'eid':11,'name':'一加3手机发布会','limit':2000,'address':"深圳宝体",'start_time':'2017','time':self.client_time,'sign':self.sign_md5}
         r = requests.post(self.base_url,data=payload)
         result = r.json()
         self.assertEqual(result['status'], 10023)
@@ -112,7 +125,7 @@ class AddEventTest(unittest.TestCase):
 
     def test_add_event_data_type_error(self):
         ''' 日期格式错误 '''
-        payload = {'eid':1,'name':'一加5手机发布会','limit':2000,'address':"深圳宝体",'start_time':'2017','time':self.client_time,'sign':self.sign_md5}
+        payload = {'eid':11,'name':'一加5手机发布会','limit':2000,'address':"深圳宝体",'start_time':'2017','time':self.client_time,'sign':self.sign_md5}
         r = requests.post(self.base_url,data=payload)
         result = r.json()
         self.assertEqual(result['status'], 10024)
@@ -125,7 +138,7 @@ class AddEventTest(unittest.TestCase):
         result = r.json()
         self.assertEqual(result['status'], 200)
         self.assertEqual(result['message'], 'add event success')
-
+"""
 
 if __name__ == '__main__':
     unittest.main()
