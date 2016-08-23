@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 # 发布会
 class Event(models.Model):
@@ -28,3 +29,8 @@ class Guest(models.Model):
 
     def __str__(self):
         return self.realname
+
+
+# 修改创建时间类型
+# ALTER TABLE  `sign_event` CHANGE  `create_time`  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+# ALTER TABLE  `sign_guest` CHANGE  `create_time`  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
