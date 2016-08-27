@@ -10,8 +10,10 @@ import json
 
 
 """
-为接口参加安全机制
+为接口参加安全机制：认证、签名、AES加密
 """
+
+#=======用户认证===============
 
 # 用户认证
 def user_auth(request):
@@ -78,16 +80,18 @@ def get_event_list(request):
             return JsonResponse({'status':10022, 'message':'query result is empty'})
 
 
+#=======用户签名+时间戳===============
+
 # 用户签名+时间戳
 def user_sign(request):
 
-    client_time = request.POST.get('time', '')
-    client_sign = request.POST.get('sign', '')
+    client_time = request.POST.get('time', '')   # 客户端时间戳
+    client_sign = request.POST.get('sign', '')   # 客户端签名
     if client_time == '' or client_sign == '':
         return "sign null"
 
     # 服务器时间
-    now_time = time.time() # 1466426831
+    now_time = time.time()    # 例：1466426831
     server_time = str(now_time).split('.')[0]
     # 获取时间差
     time_difference = int(server_time) - int(client_time)
@@ -174,18 +178,17 @@ def aes_encryption(request):
     # 解密
     decode = decryptAES(data, app_key)
     # 转化为字典
-    dict_data = json.loads(decode)
-    # 取出对应的用户名和密码
-    eid = dict_data['eid']
-    phone = dict_data['phone']
-
-    return eid,phone
-
+    dict_data = json.loads(decode)   
+    return dict_data
 
 # 嘉宾查询接口----AES算法
 def get_guest_list(request):
 
-    eid,phone = aes_encryption(request)
+    dict_data = aes_encryption(request)
+    # 取出对应的发布会id和嘉宾手机号
+    eid = dict_data['eid']
+    phone = dict_data['phone']
+
     #print(eid)
     #print(phone)
     #eid = request.GET.get("eid", "")       # 关联发布会id
