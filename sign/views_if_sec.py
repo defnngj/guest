@@ -189,8 +189,6 @@ def get_guest_list(request):
     eid = dict_data['eid']
     phone = dict_data['phone']
 
-    #print(eid)
-    #print(phone)
     #eid = request.GET.get("eid", "")       # 关联发布会id
     #phone = request.GET.get("phone", "")   # 嘉宾手机号
 

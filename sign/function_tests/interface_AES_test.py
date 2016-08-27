@@ -26,9 +26,8 @@ class AESTest(unittest.TestCase):
         ciphertext = cryptor.encrypt(self.pad(src))
         return self.encryptBase64(ciphertext)
 
-
-    def test_user_pawd_success(self):
-        """username or password right"""
+    def test_aes_interface(self):
+        '''test aes interface'''
         payload = {'eid': '1', 'phone': '13800138000'}
         # 加密
         encoded = self.encryptAES(json.dumps(payload), self.app_key).decode()
@@ -41,7 +40,6 @@ class AESTest(unittest.TestCase):
     def test_get_guest_list_eid_null(self):
         ''' eid 参数为空 '''
         payload = {'eid': '','phone': ''}
-        # 加密
         encoded = self.encryptAES(json.dumps(payload), self.app_key).decode()
 
         r = requests.post(self.base_url, data={"data": encoded})
