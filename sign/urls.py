@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from sign import views_if,views_if_security
+from sign import views_if,views_if_sec
 
 urlpatterns = [
     # guest system interface:
@@ -15,9 +15,9 @@ urlpatterns = [
     url(r'^user_sign/', views_if.user_sign, name='user_sign'),
     # security interface:
     # ex : /sign/sec_get_event_list/
-    url(r'^sec_get_event_list/', views_if_security.get_event_list, name='get_event_list'),
+    url(r'^sec_get_event_list/', views_if_sec.get_event_list, name='get_event_list'),
     # ex : /sign/sec_add_event/
-    url(r'^sec_add_event/', views_if_security.add_event, name='add_event'),
+    url(r'^sec_add_event/', views_if_sec.add_event, name='add_event'),
     # ex : /sign/sec_get_guest_list/
-    url(r'^sec_get_guest_list/', views_if_security.get_guest_list, name='get_guest_list'),
+    #url(r'^sec_get_guest_list/', views_if_sec.get_guest_list, name='get_guest_list'),
 ]
