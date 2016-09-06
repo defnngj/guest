@@ -4,10 +4,16 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.contrib import auth as django_auth
 import base64, time
 import hashlib
+from django.http import HttpResponse
+#from Crypto.Cipher import AES
+import json
+
 
 """
-为接口参加安全机制
+为接口参加安全机制：认证、签名、AES加密
 """
+
+#=======用户认证===============
 
 # 用户认证
 def user_auth(request):
@@ -74,16 +80,18 @@ def get_event_list(request):
             return JsonResponse({'status':10022, 'message':'query result is empty'})
 
 
+#=======用户签名+时间戳===============
+
 # 用户签名+时间戳
 def user_sign(request):
 
-    client_time = request.POST.get('time', '')
-    client_sign = request.POST.get('sign', '')
+    client_time = request.POST.get('time', '')   # 客户端时间戳
+    client_sign = request.POST.get('sign', '')   # 客户端签名
     if client_time == '' or client_sign == '':
         return "sign null"
 
     # 服务器时间
-    now_time = time.time() # 1466426831
+    now_time = time.time()    # 例：1466426831
     server_time = str(now_time).split('.')[0]
     # 获取时间差
     time_difference = int(server_time) - int(client_time)
@@ -140,3 +148,78 @@ def add_event(request):
         return JsonResponse({'status':10024,'message':error})
 
     return JsonResponse({'status':200,'message':'add event success'})
+
+
+#=======AES加密算法===============
+'''
+BS = 16
+unpad = lambda s : s[0: - ord(s[-1])]
+
+def decryptBase64(src):
+    return base64.urlsafe_b64decode(src)
+
+def decryptAES(src, key):
+    """
+    解析AES密文
+    """
+    src = decryptBase64(src)
+    iv = b"1172311105789011"
+    cryptor = AES.new(key, AES.MODE_CBC, iv)
+    text = cryptor.decrypt(src).decode()
+    return unpad(text)
+
+def aes_encryption(request):
+
+    app_key = 'W7v4D60fds2Cmk2U'
+
+    if request.method == 'POST':
+        data = request.POST.get("data", "")
+
+    # 解密
+    decode = decryptAES(data, app_key)
+    # 转化为字典
+    dict_data = json.loads(decode)
+    return dict_data
+
+# 嘉宾查询接口----AES算法
+def get_guest_list(request):
+
+    dict_data = aes_encryption(request)
+    # 取出对应的发布会id和嘉宾手机号
+    eid = dict_data['eid']
+    phone = dict_data['phone']
+
+    #eid = request.GET.get("eid", "")       # 关联发布会id
+    #phone = request.GET.get("phone", "")   # 嘉宾手机号
+
+    if eid == '':
+        return JsonResponse({'status':10021,'message':'eid cannot be empty'})
+
+    if eid != '' and phone == '':
+        datas = []
+        results = Guest.objects.filter(event_id=eid)
+        if results:
+            for r in results:
+                guest = {}
+                guest['realname'] = r.realname
+                guest['phone'] = r.phone
+                guest['email'] = r.email
+                guest['sign'] = r.sign
+                datas.append(guest)
+            return JsonResponse({'status':200, 'message':'success', 'data':datas})
+        else:
+            return JsonResponse({'status':10022, 'message':'query result is empty'})
+
+    if eid != '' and phone != '':
+        guest = {}
+        try:
+            result = Guest.objects.get(phone=phone,event_id=eid)
+        except ObjectDoesNotExist:
+            return JsonResponse({'status':10022, 'message':'query result is empty'})
+        else:
+            guest['realname'] = result.realname
+            guest['phone'] = result.phone
+            guest['email'] = result.email
+            guest['sign'] = result.sign
+            return JsonResponse({'status':200, 'message':'success', 'data':guest})
+'''
