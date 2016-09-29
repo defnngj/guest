@@ -6,7 +6,7 @@ import requests
 class AddEventTest(unittest.TestCase):
 
     def setUp(self):
-        self.base_url = "http://127.0.0.1:8000/sign/add_event/"
+        self.base_url = "http://127.0.0.1:8000/api/add_event/"
 
     def test_add_event_all_null(self):
         ''' 所有参数为空 '''
@@ -52,7 +52,7 @@ class AddEventTest(unittest.TestCase):
 class GetEventListTest(unittest.TestCase):
 
     def setUp(self):
-        self.base_url = "http://127.0.0.1:8000/sign/get_event_list/"
+        self.base_url = "http://127.0.0.1:8000/api/get_event_list/"
 
     def test_get_event_list_eid_null(self):
         ''' eid 参数为空 '''
@@ -97,7 +97,7 @@ class GetEventListTest(unittest.TestCase):
 class AddGuessTest(unittest.TestCase):
 
     def setUp(self):
-        self.base_url = "http://127.0.0.1:8000/sign/add_guest/"
+        self.base_url = "http://127.0.0.1:8000/api/add_guest/"
 
     def test_add_guest_all_null(self):
         ''' 参数为空 '''
@@ -159,7 +159,7 @@ class AddGuessTest(unittest.TestCase):
 class GetGuestListTest(unittest.TestCase):
 
     def setUp(self):
-        self.base_url = "http://127.0.0.1:8000/sign/get_guest_list/"
+        self.base_url = "http://127.0.0.1:8000/api/get_guest_list/"
 
     def test_get_guest_list_eid_null(self):
         ''' eid 参数为空 '''
@@ -204,7 +204,7 @@ class GetGuestListTest(unittest.TestCase):
 class UserSignTest(unittest.TestCase):
 
     def setUp(self):
-        self.base_url =  "http://127.0.0.1:8000/sign/user_sign/"
+        self.base_url =  "http://127.0.0.1:8000/api/user_sign/"
 
     def test_user_sign_all_null(self):
         ''' 参数为空 '''
