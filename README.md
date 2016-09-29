@@ -12,7 +12,8 @@
 Python版本与依赖库：
   * python3.x :https://www.python.org/
   * Django1.9.7 :https://www.djangoproject.com/ (目前只在1.9.7版本下运行通过，不要使用最新Django版本)
-  * Requests : http://www.python-requests.org/en/master/
+  * Requests : http://www.python-requests.org/en/master/ (运行/function_tests目录下的接口用例需要)
+  * django-bootstrap3 : https://github.com/dyve/django-bootstrap3
 
-学习方式：
+对应教材获取方式：
   http://www.cnblogs.com/fnng/p/5463664.html

@@ -82,31 +82,6 @@ DATABASES = {
     }
 }
 
-'''
-#company
-DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'HOST': '10.2.70.10',
-            'PORT': '3306',
-            'NAME': 'guest',
-            'USER': 'root',
-            'PASSWORD': '198876',
-    }
-}
-
-#home
-DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'HOST': '127.0.0.1',
-            'PORT': '3306',
-            'NAME': 'guest',
-            'USER': 'root',
-            'PASSWORD': '',
-    }
-}
-'''
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 
