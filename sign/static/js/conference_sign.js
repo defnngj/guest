@@ -206,69 +206,7 @@ function enter(){
 				if(json['status'] == 200){
 					var length = phone.length;
 					userdata = json['result'];
-					if(json['message'] == '获得多条用户信息'){
-						multipleMsg = true;
-						var str = '';
-						ajson_length = userdata.length;
-						if(ajson_length == 0){
-							wrongStatus('该嘉宾的邀请函未发放或者已作废');
-						}else{
-							$("#cent_box_isn").show();
-							$(".same_box,.same_text").show();
-							$('#same_num').text(ajson_length);
-							for(var i = 0; i < ajson_length; i++){
-								var isSign = userdata[i].sign == 1 ? '<em class="is-sign"></em>' : '';
-								str += '<li><div class="c_333"><span class="realname">' + userdata[i].realname + '</span>'
-									+ '<span class="guest_type_name c_33c6f1">' + userdata[i].guest_type_name + '</span>'
-									+ '<span class="seat_number">' + userdata[i].seat_number + '</span>'
-									+ (Number(userdata[i].traffic_allowance) > 0 ? '<span class="traffic_allowance"></span>' : '' ) + '</div>'
-									+ '<div class="c_90989a"><span class="position">' + userdata[i].position + '</span>'
-									+ '<span class="company">' + userdata[i].company + '</span></div>'
-									+ '<div class="c_90989a"><span class="phone">' + userdata[i].phone + '</span>'
-									+ '<span class="email">' + userdata[i].email + '</span></div>'
-									+ '<em class="li-selected"></em>' + isSign + '</li>';
-							}
-							$('#same_ul').html(str);
-							tabBlock.init({
-								box: '#same_ul',
-								fun: function(ind){
-									if(userdata[ind].sign == 0){
-										$('#make_sign_1').css('display', 'inline-block').text('确认签到');
-										$('#place_status_1').hide();
-										needSign = true;
-										isIn = hasSign = true;
-									}else if(userdata[ind].sign == 1){
-										needSign = false;
-										$('#place_status_1').css('display', 'inline-block');
-										$('#make_sign_1').hide();
-										if(userdata[ind].isin == 0){
-											$('#place_status_1').text('入场');
-											hasSign = true;
-										}else{
-											$('#place_status_1').text('离场');
-											isIn = true;
-										}
-									}
-								}
-							});
-							if(userdata[0].sign == 0){//未签到状态
-								$('#make_sign_1').css('display', 'inline-block').addClass('disabled').html("确认签到<em>(<i>3</i>s)</em>");
-								disabledSign({id:'make_sign_1', txt:'确认签到'});
-								needSign = true;
-							}else{//
-								$('#place_status_1').css('display', 'inline-block');
-								if(userdata[0].isin == 0){//已签到未入场
-									$('#place_status_1').addClass('disabled').html("入场<em>(<i>3</i>s)</em>");
-									disabledSign({id:'place_status_1', txt:'入场'});
-									hasSign = true;
-								}else{//已签到且已入场
-									$('#place_status_1').addClass('disabled').html("离场<em>(<i>3</i>s)</em>");
-									disabledSign({id:'place_status_1', txt:'离场'});
-									isIn = true;
-								}
-							}
-						}
-					}else if(json['message'] == '直接签到'){
+					if(json['message'] == 'sign success'){
 						$("#wins").show();					//成功提示
 						$("#been_in").hide();
 						$(".btn_issue").hide();
