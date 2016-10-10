@@ -1,4 +1,4 @@
-/* 
+/*
  * @Author: dinghui
  * @Date:   2014-07-21 14:22:57
  * @Last Modified by:   dinghui
@@ -150,10 +150,12 @@ function wrongStatus(str){
 function enter(){
 	isEnter = true;
 	var param   = '';
-	var value   = trimStr($("#name").val());
-	var length  = value.length;
-	var eventid = mzGlobalData.eid;
-	var isEnglish = english_str(value);
+	//var value   = trimStr($("#name").val());
+	var phone   = trimStr($("#name").val());
+	var length  = phone.length;
+	//var eventid = mzGlobalData.eid;
+	var eventid = 1;
+	var isEnglish = english_str(phone);
 	var needSign 	= false;
 	var hasSign  	= false;
 	var isIn   		= false;
@@ -162,19 +164,19 @@ function enter(){
 	if(isEnglish){
 		param = 'english';
 	}
-	var isChinese = chinese_str(value);
+	var isChinese = chinese_str(phone);
 	if(isChinese){
 		param = 'realname';
 	}
 	var act     = '';
 
-	if( !value || length=='0'){
+	if( !phone || length=='0'){
 		isEnter = false;
 		return false;
 	}else{
 		if(length == '6' && param ==''){	//用id去查
 			param = "invite_code";
-		}else if(length == '11' && !isNaN(value[0]) && param ==''){ 	//用手机去查
+		}else if(length == '11' && !isNaN(phone[0]) && param ==''){ 	//用手机去查
 			param = "phone";
 		}else if(length > '11' && param ==''){	//大于长度11的，用链接url去取后面六位的id去查
 			param = "invite_code";
@@ -193,16 +195,16 @@ function enter(){
 			return false;
 		}
 
-		
+
 		$.ajax({
 			type:"post",
-			url:"/event/check_signin",
-			data:{eventid:eventid, param:param, value:value},
+			url:"/api/user_sign/",
+			data:{eid:eventid, phone:phone},
 			dataType:"json",
 			cache:false,
 			success:function(json){
 				if(json['status'] == 200){
-					var length = value.length;
+					var length = phone.length;
 					userdata = json['result'];
 					if(json['message'] == '获得多条用户信息'){
 						multipleMsg = true;
@@ -264,7 +266,7 @@ function enter(){
 									disabledSign({id:'place_status_1', txt:'离场'});
 									isIn = true;
 								}
-							}	
+							}
 						}
 					}else if(json['message'] == '直接签到'){
 						$("#wins").show();					//成功提示
@@ -311,11 +313,11 @@ function enter(){
 						}else if(userdata['sign']==0 && userdata['isin']==0 && length==6 && userdata['valid']==0 && userdata['sent']==1){
 							$(".btn_issue").show();
 							$("#been_in").hide();
-						
+
 						}else if(userdata['sign']==0 && userdata['isin']==0 && length==11 && userdata['valid']==0 && userdata['sent']==1){
 							$(".btn_issue").show();
 							$("#been_in").hide();
-						
+
 						}else if(userdata['sign']==0 && userdata['isin']==0 && userdata['valid']==0 && userdata['sent']==1 && (param=='realname' || param=='english')){
 							$(".btn_issue").show();
 							$("#been_in").hide();
@@ -347,18 +349,18 @@ function enter(){
 						disabledSign({id:'make_sign', txt:'确认签到'});
 
 						if($(".btn_issue").is(":visible")){//未签到
-							
+
 							needSign = true;
 						}
 						if($("#been_in").is(":visible")){//已签到
 							hasSign = true;
 						}
 					}
-					
+
 					setTimeout(function(){
 						$(document).on('keyup', function(e){
 							e = e || window.event;
-							
+
 							if(e.keyCode == 13 ){
 								if(multipleMsg){
 									userdata = userdata[tabBlock.getActive('#same_ul')];
@@ -370,10 +372,10 @@ function enter(){
 									make_sign_click(userdata['gid']);
 								}else if(hasSign || isIn){//已签到
 									place_status_click(userdata['gid'], userdata['isin']);
-								} 
+								}
 								document.onkeydown=null;
 							}
-							
+
 							if(e.keyCode == 27){
 								refresh();
 								document.onkeydown=null;
@@ -394,12 +396,12 @@ function enter(){
 				}
 				isEnter = false;
 			},
-			error:function() { 
+			error:function() {
 				isEnter = false;
-				alert("你可能登录失效了或者断网了，请刷新当前页面。"); 
+				alert("你可能登录失效了或者断网了，请刷新当前页面。");
 			}
 		});
-		
+
 	}
 
 }
@@ -432,14 +434,15 @@ var disabledSign = (function (){
 
 function refresh(){
 	var time = arguments[0] ? arguments[0] : 100;
-	setTimeout("window.location.href='/event/sign_index?eid="+ mzGlobalData.eid + "'", time);
+	//setTimeout("window.location.href='/event/sign_index?eid="+ mzGlobalData.eid + "'", time);
+	setTimeout("window.location.href='/sign_index2/'", time);
 }
 
 var tabBlock = function(){
     var _opt = {
         box: null,
         fun: null
-    }, 
+    },
     tab = function(){
         var $box = $(_opt.box);
         var $li = $box.find('li');
@@ -461,7 +464,7 @@ var tabBlock = function(){
                         $li.eq(activeLi).addClass('active');
                         $box[0].scrollTop = (activeLi-1)*$li_h;
                     }
-                }  
+                }
                 //向上翻动
                 if(e.keyCode == 38){
                     if(activeLi > 0){
@@ -470,14 +473,14 @@ var tabBlock = function(){
                         $li.eq(activeLi).addClass('active');
                         $box[0].scrollTop = (activeLi)*$li_h;
                     }
-                } 
+                }
                 $box.data('activeIndex', activeLi);
                 if(typeof _opt.fun == 'function'){
 	            	_opt.fun(activeLi);
 	            }
             })
         // });
-        
+
         $box.on('click','li',function(){
         	if($('.btn_1').hasClass('disabled')){
         		return false;
@@ -492,17 +495,17 @@ var tabBlock = function(){
         })
     },
     getActive = function(box){
-        var activeIndex = $(box).data('activeIndex') == undefined 
+        var activeIndex = $(box).data('activeIndex') == undefined
             ? 0 : $(box).data('activeIndex');
         return activeIndex;
-    }   
+    }
     return {
         init: function(opt){
             $.extend(true, _opt, opt);
             tab();
         },
         getActive: function(box){
-           return getActive(box); 
+           return getActive(box);
         }
     }
 }()

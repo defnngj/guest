@@ -1,3 +1,4 @@
+#coding=utf-8
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from sign.models import Event,Guest
@@ -53,7 +54,6 @@ def sreach_name(request):
     username = request.session.get('username', '')
     sreach_name = request.GET.get("name", "")
     sreach_name_bytes = sreach_name.encode(encoding="utf-8")
-    event_list = Event.objects.filter(name__contains=sreach_name_bytes)
     return render(request, "event_manage.html", {"user": username, "events": event_list})
 
 
@@ -110,6 +110,10 @@ def sign_index(request, event_id):
     return render(request, 'sign_index.html', {'event': event,
                                                'guest':guest_data,
                                                'sign':sign_data})
+
+
+def sign_index2(request):
+    return render(request, 'sign_index2.html')
 
 
 # 签到动作

@@ -201,4 +201,16 @@ def user_sign(request):
         return JsonResponse({'status':10027,'message':'user has sign in'})
     else:
         Guest.objects.filter(phone=phone).update(sign='1')
-        return JsonResponse({'status':200,'message':'sign success'})
+        datas = []
+        results = Guest.objects.filter(event_id=eid)
+        if results:
+            for r in results:
+                guest = {}
+                guest['gid'] = r.id
+                guest['realname'] = r.realname
+                guest['phone'] = r.phone
+                guest['email'] = r.email
+                guest['sign'] = r.sign
+                guest['guest_type_name'] = 'sign success'
+                datas.append(guest)
+        return JsonResponse({'status':200,'message':'sign success','result':datas})
