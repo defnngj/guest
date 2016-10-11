@@ -65,6 +65,7 @@ function place_status_click(){
 		}
 	},"json")
 }
+
 //点击入/离场
 $("#place_status, #place_status_1").click(function(){
 	if ($(this).hasClass('disabled')) {
@@ -136,6 +137,7 @@ $(document).keydown(function(event){
 		enter();
 	}
 });
+
 function wrongStatus(str){
 	$("#cent_box_isn").show();
 	$('#text_box_2').show();
@@ -147,42 +149,50 @@ function wrongStatus(str){
 	refresh(2000);
 	return false;
 }
+
+
+function signSuccess(realname,phone){
+	$('#text_box').show();
+	$('#username').text(realname).css({
+		color: '#333',
+		background: 'none'
+	});
+	$('#telphone').text(phone).css({
+		color: '#333',
+		background: 'none'
+	});
+	isStatusNormal = false;
+	refresh(2000);
+	return false;
+}
+
 function enter(){
 	isEnter = true;
-	var param   = '';
-	//var value   = trimStr($("#name").val());
 	var phone   = trimStr($("#name").val());
 	var length  = phone.length;
-	//var eventid = mzGlobalData.eid;
-	var eventid = 1;
-	var isEnglish = english_str(phone);
-	var needSign 	= false;
-	var hasSign  	= false;
-	var isIn   		= false;
-	var multipleMsg = false;
+	var eventid = mzGlobalData.eid;
+	//var eventid = 1;
 
-	if(isEnglish){
-		param = 'english';
-	}
-	var isChinese = chinese_str(phone);
-	if(isChinese){
-		param = 'realname';
-	}
-	var act     = '';
 
+	window.alert(eventid);
 	if( !phone || length=='0'){
 		isEnter = false;
 		return false;
 	}else{
-		if(length == '6' && param ==''){	//用id去查
-			param = "invite_code";
-		}else if(length == '11' && !isNaN(phone[0]) && param ==''){ 	//用手机去查
-			param = "phone";
-		}else if(length > '11' && param ==''){	//大于长度11的，用链接url去取后面六位的id去查
-			param = "invite_code";
-		}else if(param==''){
-			// $("#text_box_2").css("width", "auto");
+		if(isNaN(phone)){
 			$("#tips").text("输入格式错误!");
+			$("#tips").css("background","none");
+			$("#cent_box_isn").show();//背景
+			$("#cent_box").hide();//隐藏输入框
+			$("#text").hide();//隐藏标题
+			$("#name").val('');
+			$("#text_box_2").show();//错误提示
+			$(".smile").hide();
+			isEnter = false;
+			//refresh(3000);
+			return false;
+		}else if(length != 11){	//用id去查
+			$("#tips").text("手机号位数错误!");
 			$("#tips").css("background","none");
 			$("#cent_box_isn").show();//背景
 			$("#cent_box").hide();//隐藏输入框
@@ -203,123 +213,18 @@ function enter(){
 			dataType:"json",
 			cache:false,
 			success:function(json){
-				if(json['status'] == 200){
-					var length = phone.length;
-					userdata = json['result'];
-					if(json['message'] == 'sign success'){
-						$("#wins").show();					//成功提示
-						$("#been_in").hide();
-						$(".btn_issue").hide();
-						refresh(2000);
-					}else if(json['message'] == '获得一条用户信息'){
-						if(userdata['present'] == 0){
-							wrongStatus('该嘉宾不出席');
-						}else if( (userdata['sign']==0 && userdata['isin']==0 && length>11 && param!='realname' && userdata['valid']==1 && userdata['sent']==1)
-							|| (userdata['sign']==0 && userdata['isin']==0 && length==6 && userdata['valid']==1 && userdata['sent']==1)
-							|| (userdata['sign']==0 && userdata['isin']==0 && length==11 && userdata['valid']==1 && userdata['sent']==1)
-							|| (userdata['sign']==0 && userdata['isin']==0 && userdata['valid']==1 && userdata['sent']==1 && (param=='realname' || param=='english')) )
-						{
-							wrongStatus("邀请函已作废");
-						}else if( (userdata['sign']==0 && userdata['isin']==0 && length>11 && param!='realname' && userdata['valid']==0 && userdata['sent']==0)
-							|| (userdata['sign']==0 && userdata['isin']==0 && length==6 && userdata['valid']==0 && userdata['sent']==0)
-							|| (userdata['sign']==0 && userdata['isin']==0 && length==11 && userdata['valid']==0 && userdata['sent']==0)
-							|| (userdata['sign']==0 && userdata['isin']==0 && userdata['valid']==0 && userdata['sent']==0 && (param=='realname' || param=='english')) )
-						{
-							wrongStatus("该嘉宾未发放邀请函");
-						// }else if( (userdata['sign']==0 && userdata['isin']==0 && length>11 && param!='realname' && userdata['valid']==1 && userdata['sent']==0)
-						// 	|| (userdata['sign']==0 && userdata['isin']==0 && length==6 && userdata['valid']==1 && userdata['sent']==0)
-						// 	|| (userdata['sign']==0 && userdata['isin']==0 && length==11 && userdata['valid']==1 && userdata['sent']==0)
-						// 	|| (userdata['sign']==0 && userdata['isin']==0 && userdata['valid']==1 && userdata['sent']==0 && (param=='realname' || param=='english')) )
-						// {
-						// 	wrongStatus("邀请函已作废、未发放");
-						}else if((userdata['sign']==1 && userdata['isin']==1 && length>11 && param!='realname') || (userdata['sign']==1 && userdata['isin']==1 && length==6) || (userdata['sign']==1 && userdata['isin']==1 && length==11) || (userdata['sign']==1 && userdata['isin']==1 && (param=='realname' || param=='english'))){
-							$("#been_in").show();				//在场状态提示
-							$(".btn_issue").hide();
-							$(".been_img").hide();
-							$("#wined").show().parent().addClass('signed');
-							$("#place_status").addClass('disabled').html("离场<em>(<i>3</i>s)</em>");
-							disabledSign({id:'place_status', txt:'离场'});
-						}else if((userdata['sign']==1 && userdata['isin']==0 && length>11 && param!='realname') || (userdata['sign']==1 && userdata['isin']==0 && length==6) || (userdata['sign']==1 && userdata['isin']==0 && length==11) || (userdata['sign']==1 && userdata['isin']==0 && (param=='realname' || param=='english'))){
-							$("#been_in").show();				//在场状态提示
-							$(".btn_issue").hide();
-							$(".been_img").hide();
-							$("#place_status").addClass('disabled').html("入场<em>(<i>3</i>s)</em>");
-							disabledSign({id:'place_status', txt:'入场'});
-							$("#wined").show().parent().addClass('signed');
-							$("#place_status").focus()
-							$("#place_status").attr("onkeydown","FSubmit()");
-						}else if(userdata['sign']==0 && userdata['isin']==0 && length==6 && userdata['valid']==0 && userdata['sent']==1){
-							$(".btn_issue").show();
-							$("#been_in").hide();
-
-						}else if(userdata['sign']==0 && userdata['isin']==0 && length==11 && userdata['valid']==0 && userdata['sent']==1){
-							$(".btn_issue").show();
-							$("#been_in").hide();
-
-						}else if(userdata['sign']==0 && userdata['isin']==0 && userdata['valid']==0 && userdata['sent']==1 && (param=='realname' || param=='english')){
-							$(".btn_issue").show();
-							$("#been_in").hide();
-						}
-					}
-					if(!multipleMsg && isStatusNormal){
-						$("#txt_box").show();
-						$("#userid").val(userdata['gid']);
-						$("#username").text(userdata['realname']);
-						$("#typename").text(userdata['guest_type_name']);
-						$("#station").text(userdata['company']);
-						$("#position").text(userdata['position']);
-						$("#telphone").text(userdata['phone']);
-						$("#email").text(userdata['email']);
-						$("#seat").text(userdata['seat_number']);
-						$("#isin").val(userdata['isin']);
-						$("#issignin").val(userdata['sign']);
-						if (userdata['traffic_allowance']>0) {
-							// alert(userdata['tra_money'])
-							$("#start").css("display","inline-block");
-						};
-						$("#cent_box_isn").show();//背景
-						$("#cent_box").hide();//隐藏输入框
-						$("#text").hide();//隐藏标题
-						$("#name").val('');
-						//clearInterval(timer1);
-
-						$("#make_sign").addClass('disabled').html("确认签到<em>(<i>3</i>s)</em>");
-						disabledSign({id:'make_sign', txt:'确认签到'});
-
-						if($(".btn_issue").is(":visible")){//未签到
-
-							needSign = true;
-						}
-						if($("#been_in").is(":visible")){//已签到
-							hasSign = true;
-						}
-					}
-
-					setTimeout(function(){
-						$(document).on('keyup', function(e){
-							e = e || window.event;
-
-							if(e.keyCode == 13 ){
-								if(multipleMsg){
-									userdata = userdata[tabBlock.getActive('#same_ul')];
-								}
-								// if(!ajson_length){
-								// 	needSign = hasSign = isIn = true;
-								// }
-								if(needSign){//未签到
-									make_sign_click(userdata['gid']);
-								}else if(hasSign || isIn){//已签到
-									place_status_click(userdata['gid'], userdata['isin']);
-								}
-								document.onkeydown=null;
-							}
-
-							if(e.keyCode == 27){
-								refresh();
-								document.onkeydown=null;
-							}
-						})
-					},2000)
+				if(json['status'] == 10025){
+					wrongStatus('嘉宾不存在');
+					refresh(2000);
+				}else if(json['status'] == 10026){
+					wrongStatus('该嘉宾没有参加此次发布会');
+					refresh(2000);
+				}else if(json['status'] == 10027){
+					wrongStatus('嘉宾已签到');
+					refresh(2000);
+				}else if(json['status'] == 200){
+					signSuccess(json['realname'],json['phone']);
+					refresh(3000);
 				}else{
 					$("#cent_box_isn").show();//背景
 					$("#text_box_2").show();//错误提示
@@ -343,6 +248,8 @@ function enter(){
 	}
 
 }
+
+
 var disabledSign = (function (){
 
 	return function(opt){
@@ -372,8 +279,7 @@ var disabledSign = (function (){
 
 function refresh(){
 	var time = arguments[0] ? arguments[0] : 100;
-	//setTimeout("window.location.href='/event/sign_index?eid="+ mzGlobalData.eid + "'", time);
-	setTimeout("window.location.href='/sign_index2/'", time);
+	setTimeout("window.location.href='/sign_index2/"+mzGlobalData.eid + "/'", time);
 }
 
 var tabBlock = function(){

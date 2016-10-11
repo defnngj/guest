@@ -112,8 +112,10 @@ def sign_index(request, event_id):
                                                'sign':sign_data})
 
 
-def sign_index2(request):
-    return render(request, 'sign_index2.html')
+
+def sign_index2(request,event_id):
+    get_object_or_404(Event, id=event_id)
+    return render(request, 'sign_index2.html',{'eventid': event_id})
 
 
 # 签到动作
