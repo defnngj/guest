@@ -164,11 +164,13 @@ height: 100%;top: 0px;background-size:100% 100%;}
 	vertical-align: middle;
 	margin-right: 20px;
 }
+
 #tips{
 	background:url(/static/image/sign/erro_text.png) no-repeat;
 	vertical-align:middle;
 	height: 74px;
 	}
+
 #seat{
 	font-size: 48px;
 	color: #fff;
@@ -276,13 +278,6 @@ height: 100%;top: 0px;background-size:100% 100%;}
 }
 .guest_type_name{
 	margin: 0 52px;
-}
-.traffic_allowance{
-	background:url(/static/image/sign/money.png) no-repeat;
-	width: 40px;
-    height: 40px;
-    margin-top: 5px;
-    margin-left: 20px;
 }
 .same_btn{
 	margin-top: 50px;

@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="/static/css/draw_results.css" />
 <script type="text/javascript">
     var mzGlobalData = {};
-    mzGlobalData.eid={{eventid}};
+    mzGlobalData.eid={{eventId}};
 </script>
 <script type="text/javascript" src="/static/js/jquery-1.10.2.min.js"></script>
 <link REL="SHORTCUT ICON" HREF="{{ MEDIA_URL }}/static/image/favicon.ico">
@@ -24,53 +24,25 @@
 <div id="bg_right_bottom"></div>
 <div class="clear"></div>
 <!-- <div id="bg_buttom"></div> -->
-<!--
-<div id="text">欢迎来到xx新品发布会</div>
--->
+
+<div id="text">欢迎{{eventNanme}}</div>
+
 <!-- 光标聚焦输入框 -->
 <div id="cent_box">
     <div class="box">
         <input id="name" type="text" value="" />
     </div>
 </div>
-<!-- 用户信息显示状态 -->
-<div id="txet_box" style="display:none;">
-    <input type="hidden" id="userid">
-    <input type="hidden" id="isin">
-    <input type="hidden" id="issignin">
-    <ul>
-        <li class="issue_name">
-            <div id="wined" class="wined"></div>
-            <div class="user_box">
-                <a id="username" ></a>
-                <!-- <a id="wined" class="win  wined">已签到</a> -->
-                <!--<cite class="typename">签到成功</cite> -->
-            </div>
-            <div class="valid_box">
-                <a id="valid"></a>
-            </div>
-            <div class="type_box">
-                <!-- <a id="typename"></a> -->
-                <a id="seat"></a>
-                <a id="start" class="text_icon start"></a>
-            </div>
-        </li>
-        <li class="message">
-            <span class="text_icon" id="station"></span>
-            <span class="text_icon" id="position"></span>
-        </li>
-        <li class="message boder">
-            <span class="text_icon" id="telphone"></span>
-            <span class="text_icon" id="email"></span>
-        </li>
-    </ul>
-</div>
 
-<!-- 用户不存在 验证失败状态-->
+
+<!-- 签到提示 -->
 <div id="text_box_2" style="display:none;">
     <div>
-        <span  class="cry"></span>
-        <span style="display:none" class="smile"></span><!-- 入场成功 离场成功笑脸 -->
+        <!-- 签到失败图标 -->
+        <span style="display:none" class="cry"></span>
+        <!-- 签到成功图标 -->
+        <span style="display:none" class="smile"></span>
+        <span id="realname"></span><br>
         <span id="tips"></span>
     </div>
 </div>
