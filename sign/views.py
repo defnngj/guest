@@ -54,6 +54,7 @@ def sreach_name(request):
     username = request.session.get('username', '')
     sreach_name = request.GET.get("name", "")
     sreach_name_bytes = sreach_name.encode(encoding="utf-8")
+    event_list = Event.objects.filter(name__contains=sreach_name_bytes)
     return render(request, "event_manage.html", {"user": username, "events": event_list})
 
 
@@ -81,8 +82,8 @@ def guest_manage(request):
 def sreach_phone(request):
     username = request.session.get('username', '')
     sreach_phone = request.GET.get("phone", "")
-    #sreach_name_bytes = sreach_phone.encode(encoding="utf-8")
-    guest_list = Guest.objects.filter(phone__contains=sreach_phone)
+    sreach_name_bytes = sreach_phone.encode(encoding="utf-8")
+    guest_list = Guest.objects.filter(phone__contains=sreach_name_bytes)
     username = request.session.get('username', '')
 
     paginator = Paginator(guest_list, 10)
