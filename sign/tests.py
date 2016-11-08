@@ -15,19 +15,13 @@ import time
 
 # Create your tests here.
 class IndexPageTest(TestCase):
-    ''' 测试index登录首页'''
+    '''测试index登录首页'''
 
-    def test_root_url_resolves_to_index_page(self):
-        ''' 测试根url是否解析到登录页 '''
-        found = resolve('/')
-        self.assertEqual(found.func, index)
-
-    def test_index_page_returns_correct_html(self):
-        ''' 测试调用index函数返回的页与模板加载的index2.html是否相等 '''
-        request = HttpRequest()
-        response = index(request)
-        expected_html = render_to_string('index.html')
-        self.assertEqual(response.content.decode(), expected_html)
+    def test_index_page_renders_index_template(self):
+        ''' 断言是否用给定的index.html模版响应'''
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'index.html')
 
 
 class LoginActionTest(TestCase):
