@@ -120,6 +120,12 @@ function enter(){
 				}else if(json['status'] == 10027){
 					wrongStatus('嘉宾已签到');
 					refresh(2000);
+				}else if(json['status'] == 10024){
+					wrongStatus('发布会已开始');
+					refresh(2000);
+				}else if(json['status'] == 10023){
+					wrongStatus('发布会状态未开启');
+					refresh(2000);
 				}else if(json['status'] == 200){
 					$("#realname").text(json['realname']);
 					$("#realname").css("background","none");
@@ -136,6 +142,7 @@ function enter(){
 					refresh(3000);
 					return false;
 				}else{
+					window.alert(json['status']);
 					$("#cent_box_isn").show();//背景
 					$("#text_box_2").show();//错误提示
 					$("#cent_box").hide();//隐藏输入框
