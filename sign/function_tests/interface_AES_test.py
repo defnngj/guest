@@ -11,7 +11,7 @@ class AESTest(unittest.TestCase):
         BS = 16
         self.pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
 
-        self.base_url = "http://127.0.0.1:8000/sign/sec_get_guest_list/"
+        self.base_url = "http://127.0.0.1:8000/api/sec_get_guest_list/"
         self.app_key = 'W7v4D60fds2Cmk2U'
 
     def encryptBase64(self,src):

@@ -8,7 +8,7 @@ import hashlib
 class AddEventTest(unittest.TestCase):
 
     def setUp(self):
-        self.base_url = "http://127.0.0.1:8000/sign/sec_add_event/"
+        self.base_url = "http://127.0.0.1:8000/api/sec_add_event/"
         # app_key
         self.api_key = "&Guest-Bugmaster"
         # 当前时间

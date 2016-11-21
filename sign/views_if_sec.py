@@ -151,7 +151,6 @@ def add_event(request):
 
 
 #=======AES加密算法===============
-'''
 BS = 16
 unpad = lambda s : s[0: - ord(s[-1])]
 
@@ -222,4 +221,3 @@ def get_guest_list(request):
             guest['email'] = result.email
             guest['sign'] = result.sign
             return JsonResponse({'status':200, 'message':'success', 'data':guest})
-'''

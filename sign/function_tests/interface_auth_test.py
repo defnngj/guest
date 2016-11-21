@@ -7,7 +7,7 @@ class GetEventListTest(unittest.TestCase):
     ''' 查询发布会信息（带用户认证）'''
 
     def setUp(self):
-        self.base_url = "http://127.0.0.1:8000/sign/sec_get_event_list/"
+        self.base_url = "http://127.0.0.1:8000/api/sec_get_event_list/"
         self.auth_user = ('admin', 'admin123456')
 
     def test_get_event_list_auth_null(self):

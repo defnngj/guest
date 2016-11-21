@@ -1,7 +1,7 @@
 """guest URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/1.9/topics/http/urls/
+    https://docs.djangoproject.com/en/1.10/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -16,7 +16,6 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from sign import views
-
 
 
 urlpatterns = [
@@ -34,5 +33,4 @@ urlpatterns = [
     url(r'^sign_index2/(?P<event_id>[0-9]+)/$', views.sign_index2),
     url(r'^sign_index_action/(?P<event_id>[0-9]+)/$', views.sign_index_action),
     url(r'^api/', include('sign.urls', namespace="sign")),
-
 ]
