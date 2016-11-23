@@ -192,14 +192,13 @@ def user_sign(request):
     if not result:
         return JsonResponse({'status':10025,'message':'user phone null'})
 
-    result = Guest.objects.get(phone=phone).sign
-    if result:
-        return JsonResponse({'status':10027,'message':'user has sign in'})
-
     result = Guest.objects.filter(phone=phone,event_id=eid)
     if not result:
         return JsonResponse({'status':10026,'message':'user did not participate in the conference'})
+
+    result = Guest.objects.get(event_id=eid,phone=phone).sign
+    if result:
+        return JsonResponse({'status':10027,'message':'user has sign in'})
     else:
         Guest.objects.filter(phone=phone).update(sign='1')
-        result = Guest.objects.get(phone=phone,event_id=eid)
-        return JsonResponse({'status':200,'message':'sign success','realname':result.realname,'phone':result.phone})
+        return JsonResponse({'status':200,'message':'sign success'})
