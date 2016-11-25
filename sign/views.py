@@ -140,12 +140,12 @@ def sign_index_action(request,event_id):
     if not result:
         return render(request, 'sign_index.html', {'event': event,'hint': 'event id or phone error.','guest':guest_data,'sign':sign_data})
 
-    result = Guest.objects.get(phone = phone)
+    result = Guest.objects.get(event_id = event_id,phone = phone)
 
     if result.sign:
         return render(request, 'sign_index.html', {'event': event,'hint': "user has sign in.",'guest':guest_data,'sign':sign_data})
     else:
-        Guest.objects.filter(phone = phone).update(sign = '1')
+        Guest.objects.filter(event_id = event_id,phone = phone).update(sign = '1')
         return render(request, 'sign_index.html', {'event': event,'hint':'sign in success!','user': result,'guest':guest_data,'sign':sign_data})
 
 
