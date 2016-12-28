@@ -5,7 +5,7 @@ from django.contrib import auth as django_auth
 import base64, time
 import hashlib
 from django.http import HttpResponse
-#from Crypto.Cipher import AES
+#from Crypto.Cipher import AES    # 请安装 Crypto
 import json
 
 
@@ -20,7 +20,7 @@ def user_auth(request):
     get_http_auth = request.META.get('HTTP_AUTHORIZATION', b'')
     auth = get_http_auth.split()
     try:
-        auth_parts = base64.b64decode(auth[1]).decode('iso-8859-1').partition(':')
+        auth_parts = base64.b64decode(auth[1]).decode('urf-8').partition(':')
     except IndexError:
         return "null"
     userid, password = auth_parts[0], auth_parts[2]
@@ -85,8 +85,12 @@ def get_event_list(request):
 # 用户签名+时间戳
 def user_sign(request):
 
-    client_time = request.POST.get('time', '')   # 客户端时间戳
-    client_sign = request.POST.get('sign', '')   # 客户端签名
+    if request.method == 'POST':
+        client_time = request.POST.get('time', '')   # 客户端时间戳
+        client_sign = request.POST.get('sign', '')   # 客户端签名
+    else:
+        return "error"
+
     if client_time == '' or client_sign == '':
         return "sign null"
 
@@ -105,7 +109,7 @@ def user_sign(request):
     md5.update(sign_bytes_utf8)
     sever_sign = md5.hexdigest()
     if sever_sign != client_sign:
-        return "sign error"
+        return "sign fail"
     else:
         return "sign right"
 
@@ -113,12 +117,14 @@ def user_sign(request):
 # 添加发布会接口---增加签名+时间戳
 def add_event(request):
     sign_result = user_sign(request)
-    if sign_result == "sign null":
-        return JsonResponse({'status':10011,'message':'user sign null'})
+    if sign_result == "error":
+        return JsonResponse({'status':10011,'message':'request error'})
+    elif sign_result == "sign null":
+        return JsonResponse({'status':10012,'message':'user sign null'})
     elif sign_result == "timeout":
-        return JsonResponse({'status':10012,'message':'user sign timeout'})
-    elif sign_result == "sign error":
-        return JsonResponse({'status':10013,'message':'user sign error'})
+        return JsonResponse({'status':10013,'message':'user sign timeout'})
+    elif sign_result == "sign fail":
+        return JsonResponse({'status':10014,'message':'user sign error'})
 
     eid = request.POST.get('eid','')                 # 发布会id
     name = request.POST.get('name','')               # 发布会标题
@@ -151,6 +157,7 @@ def add_event(request):
 
 
 #=======AES加密算法===============
+'''
 BS = 16
 unpad = lambda s : s[0: - ord(s[-1])]
 
@@ -173,6 +180,8 @@ def aes_encryption(request):
 
     if request.method == 'POST':
         data = request.POST.get("data", "")
+    else:
+        return "error"
 
     # 解密
     decode = decryptAES(data, app_key)
@@ -184,12 +193,12 @@ def aes_encryption(request):
 def get_guest_list(request):
 
     dict_data = aes_encryption(request)
+    if dict_data == "error":
+        return JsonResponse({'status':10011,'message':'request error'})
+
     # 取出对应的发布会id和嘉宾手机号
     eid = dict_data['eid']
     phone = dict_data['phone']
-
-    #eid = request.GET.get("eid", "")       # 关联发布会id
-    #phone = request.GET.get("phone", "")   # 嘉宾手机号
 
     if eid == '':
         return JsonResponse({'status':10021,'message':'eid cannot be empty'})
@@ -221,3 +230,4 @@ def get_guest_list(request):
             guest['email'] = result.email
             guest['sign'] = result.sign
             return JsonResponse({'status':200, 'message':'success', 'data':guest})
+'''
