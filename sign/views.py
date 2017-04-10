@@ -50,11 +50,11 @@ def event_manage(request):
 
 # 发布会名称搜索
 @login_required
-def sreach_name(request):
+def search_name(request):
     username = request.session.get('username', '')
-    sreach_name = request.GET.get("name", "")
-    sreach_name_bytes = sreach_name.encode(encoding="utf-8")
-    event_list = Event.objects.filter(name__contains=sreach_name_bytes)
+    search_name = request.GET.get("name", "")
+    search_name_bytes = search_name.encode(encoding="utf-8")
+    event_list = Event.objects.filter(name__contains=search_name_bytes)
     return render(request, "event_manage.html", {"user": username, "events": event_list})
 
 
@@ -79,11 +79,11 @@ def guest_manage(request):
 
 # 嘉宾手机号的查询
 @login_required
-def sreach_phone(request):
+def search_phone(request):
     username = request.session.get('username', '')
-    sreach_phone = request.GET.get("phone", "")
-    sreach_name_bytes = sreach_phone.encode(encoding="utf-8")
-    guest_list = Guest.objects.filter(phone__contains=sreach_name_bytes)
+    search_phone = request.GET.get("phone", "")
+    search_name_bytes = search_phone.encode(encoding="utf-8")
+    guest_list = Guest.objects.filter(phone__contains=search_name_bytes)
     username = request.session.get('username', '')
 
     paginator = Paginator(guest_list, 10)
