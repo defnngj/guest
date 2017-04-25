@@ -62,8 +62,7 @@ def add_guest(request):
         return JsonResponse({'status':10024,'message':'event number is full'})
 
     event_time = Event.objects.get(id=eid).start_time     # 发布会时间
-    etime = str(event_time).split(".")[0]
-    timeArray = time.strptime(etime, "%Y-%m-%d %H:%M:%S")
+    timeArray = time.strptime(str(event_time), "%Y-%m-%d %H:%M:%S")
     e_time = int(time.mktime(timeArray))
 
     now_time = str(time.time())          # 当前时间
@@ -177,8 +176,7 @@ def user_sign(request):
         return JsonResponse({'status':10023,'message':'event status is not available'})
 
     event_time = Event.objects.get(id=eid).start_time     # 发布会时间
-    etime = str(event_time).split(".")[0]
-    timeArray = time.strptime(etime, "%Y-%m-%d %H:%M:%S")
+    timeArray = time.strptime(str(event_time), "%Y-%m-%d %H:%M:%S")
     e_time = int(time.mktime(timeArray))
 
     now_time = str(time.time())          # 当前时间
