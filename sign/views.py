@@ -131,7 +131,7 @@ def sign_index_action(request,event_id):
     guest_list = Guest.objects.filter(event_id=event_id)
     sign_list = Guest.objects.filter(sign="1", event_id=event_id)
     guest_data = str(len(guest_list))
-    sign_data = str(len(sign_list)+1)
+    sign_data = str(len(sign_list))
 
     phone =  request.POST.get('phone','')
 
