@@ -72,10 +72,10 @@ def guest_manage(request):
     try:
         contacts = paginator.page(page)
     except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
+        # 如果页数不是整型, 取第一页.
         contacts = paginator.page(1)
     except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
+        # 如果页数超出查询范围，取最后一页
         contacts = paginator.page(paginator.num_pages)
     return render(request, "guest_manage.html", {"user": username, "guests": contacts})
 
@@ -149,8 +149,11 @@ def sign_index_action(request,event_id):
         return render(request, 'sign_index.html', {'event': event,'hint': "user has sign in.",'guest':guest_data,'sign':sign_data})
     else:
         Guest.objects.filter(event_id = event_id,phone = phone).update(sign = '1')
-        return render(request, 'sign_index.html', {'event': event,'hint':'sign in success!','user': result,'guest':guest_data,'sign':sign_data})
-
+        return render(request, 'sign_index.html', {'event': event,'hint':'sign in success!',
+            'user': result,
+            'guest':guest_data,
+            'sign':str(int(sign_data)+1)
+            })
 
 
 '''
