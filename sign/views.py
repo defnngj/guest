@@ -87,7 +87,6 @@ def search_phone(request):
     search_phone = request.GET.get("phone", "")
     search_name_bytes = search_phone.encode(encoding="utf-8")
     guest_list = Guest.objects.filter(phone__contains=search_name_bytes)
-    username = request.session.get('username', '')
 
     paginator = Paginator(guest_list, 10)
     page = request.GET.get('page')
@@ -100,7 +99,9 @@ def search_phone(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         contacts = paginator.page(paginator.num_pages)
 
-    return render(request, "guest_manage.html", {"user": username, "guests": contacts})
+    return render(request, "guest_manage.html", {"user": username,
+                                                   "guests": contacts,
+                                                   "phone":search_phone})
 
 
 # 签到页面
