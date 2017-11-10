@@ -76,7 +76,11 @@
             Page {{ guests.number }} of {{ guests.paginator.num_pages }}.
           </span>
         {% if guests.has_next %}
-          <a href="?phone={{ phone }}&page={{ guests.next_page_number }}">next</a>
+          {% if phone %}
+            <a href="?phone={{ phone }}&page={{ guests.next_page_number }}">next</a>
+          {% else %}
+           <a href="?page={{ guests.next_page_number }}">next</a>
+          {% endif %}
         {% endif %}
       </span>
     </div>
