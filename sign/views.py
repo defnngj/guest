@@ -33,7 +33,8 @@ def login_action(request):
             return response
         else:
             return render(request,"index.html",{"error":"username or password error!"})
-
+    # 防止直接通过浏览器访问 /login_action/ 地址。
+    return render(request,"index.html")
 
 # 退出登录
 @login_required
@@ -67,7 +68,7 @@ def guest_manage(request):
     guest_list = Guest.objects.all()
     username = request.session.get('username', '')
 
-    paginator = Paginator(guest_list, 10)
+    paginator = Paginator(guest_list, 2)
     page = request.GET.get('page')
     try:
         contacts = paginator.page(page)
