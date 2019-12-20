@@ -70,7 +70,11 @@
     <div class="pagination">
       <span class="step-links">
         {% if guests.has_previous %}
-          <a href="?phone={{ phone }}&page={{ guests.previous_page_number }}">previous</a>
+          {% if phone %}
+            <a href="?phone={{ phone }}&page={{ guests.previous_page_number }}">previous</a>
+          {% else %}
+            <a href="?page={{ guests.previous_page_number }}">previous</a>
+          {% endif %}
         {% endif %}
           <span class="current">
             Page {{ guests.number }} of {{ guests.paginator.num_pages }}.
@@ -79,7 +83,7 @@
           {% if phone %}
             <a href="?phone={{ phone }}&page={{ guests.next_page_number }}">next</a>
           {% else %}
-           <a href="?page={{ guests.next_page_number }}">next</a>
+            <a href="?page={{ guests.next_page_number }}">next</a>
           {% endif %}
         {% endif %}
       </span>
