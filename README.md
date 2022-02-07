@@ -1,8 +1,8 @@
-#### guest
+# guest
 
 基于Django的简易发布会签到系统。
 
-Django3.0 发布，本项目代码与出版图书保持一致，想使用Django 3.0 的请移步到：[guest3](https://github.com/defnngj/guest3)
+> ⚠️  本项目基于django 1.11.x 版本，与出版图书保持一致，想使用Django 3.0+ 的请移步到：[guest3](https://github.com/defnngj/guest3)
 
 ### 介绍：
 
